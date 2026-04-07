@@ -1,0 +1,81 @@
+<svg width="1440" height="1019.9999999999999" xmlns="http://www.w3.org/2000/svg" fill="none">
+ <defs>
+  <filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="1020" width="1440" y="0" x="0" id="shadow"/>
+  <linearGradient y2="1" x2="1" y1="0" x1="0" id="bg">
+   <stop stop-color="#F5F7FC" offset="0"/>
+   <stop stop-color="#EEF2F8" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" fill="url(#bg)" height="1020" width="1440"/>
+  <rect id="svg_2" fill-opacity="0.74" fill="#FFFFFF" rx="24" height="940" width="1360" y="40" x="40"/>
+  <rect id="svg_3" fill="#FFFFFF" rx="20" height="72" width="1296" y="64" x="72"/>
+  <text id="svg_4" fill="#49559F" font-weight="700" font-size="30" font-family="Arial" y="109" x="104">Belavia</text>
+  <rect id="svg_5" fill="#E8252D" rx="2" height="4" width="78" y="116" x="104"/>
+  <text id="svg_6" fill="#52607A" font-size="15" font-family="Arial" y="105.94737" x="915.78947">Бронирование</text>
+  <text id="svg_7" fill="#52607A" font-size="15" font-family="Arial" y="104.89474" x="1070.42105">Мои поездки</text>
+  <text id="svg_8" fill="#49559F" font-weight="700" font-size="15" font-family="Arial" y="104.89474" x="1214.52632">Личный кабинет</text>
+  <text id="svg_9" fill="#49559F" font-weight="700" font-size="15" font-family="Arial" y="208" x="104">← Назад к поездкам</text>
+  <text id="svg_10" fill="#49559F" font-weight="700" font-size="42" font-family="Arial" y="268" x="104">Карточка заказа</text>
+  <g id="svg_11" filter="url(#shadow)">
+   <rect id="svg_12" fill="#FFFFFF" rx="24" height="212" width="1232" y="306" x="104"/>
+  </g>
+  <text id="svg_13" fill="#24324D" font-weight="700" font-size="14" font-family="Arial" y="352" x="136">Бронирование</text>
+  <text id="svg_14" fill="#24324D" font-weight="700" font-size="28" font-family="Arial" y="386" x="136">PNR 97BNT5</text>
+  <rect id="svg_15" fill="#EEF3FF" rx="16" height="32" width="120" y="404" x="136"/>
+  <text id="svg_16" fill="#49559F" font-weight="700" font-size="13" font-family="Arial" text-anchor="middle" y="425" x="196">Оплачен</text>
+  <text id="svg_17" fill="#24324D" font-weight="700" font-size="36" font-family="Arial" y="392" x="388">MSQ</text>
+  <line id="svg_18" stroke-width="2" stroke="#AAB7CC" y2="376" x2="620" y1="376" x1="500"/>
+  <circle id="svg_19" fill="#49559F" r="6" cy="376" cx="500"/>
+  <circle id="svg_20" fill="#49559F" r="6" cy="376" cx="620"/>
+  <text id="svg_21" fill="#24324D" font-weight="700" font-size="36" font-family="Arial" y="392" x="652">IST</text>
+  <text id="svg_22" fill="#52607A" font-size="16" font-family="Arial" y="426" x="388">Минск — Стамбул</text>
+  <text id="svg_23" fill="#24324D" font-weight="700" font-size="14" font-family="Arial" y="468" x="388">Вылет</text>
+  <text id="svg_24" fill="#24324D" font-size="18" font-family="Arial" y="498" x="388">12 марта 2026 · 11:20 — 15:55</text>
+  <text id="svg_25" fill="#24324D" font-weight="700" font-size="14" font-family="Arial" y="352" x="888">Тариф</text>
+  <text id="svg_26" fill="#24324D" font-size="18" font-family="Arial" y="382" x="888">SMART</text>
+  <text id="svg_27" fill="#24324D" font-weight="700" font-size="14" font-family="Arial" y="428" x="888">Стоимость</text>
+  <text id="svg_28" fill="#24324D" font-size="18" font-family="Arial" y="458" x="888">540 BYN</text>
+  <rect id="svg_29" stroke-width="1.5" stroke="#D7DEEC" fill="#FFFFFF" rx="14" height="44" width="196" y="348" x="1108"/>
+  <text id="svg_30" fill="#49559F" font-weight="700" font-size="14" font-family="Arial" text-anchor="middle" y="376" x="1206">Отправить документы</text>
+  <rect id="svg_31" fill="#49559F" rx="14" height="44" width="196" y="408" x="1108"/>
+  <text id="svg_32" fill="#FFFFFF" font-weight="700" font-size="14" font-family="Arial" text-anchor="middle" y="436" x="1206">Скачать билет</text>
+  <g stroke="null" id="svg_33" filter="url(#shadow)">
+   <rect stroke="null" style="vector-effect: non-scaling-stroke;" id="svg_34" fill="#FFFFFF" rx="24" height="390.63158" width="728" y="550" x="104"/>
+  </g>
+  <text id="svg_35" fill="#49559F" font-weight="700" font-size="24" font-family="Arial" y="594" x="136">Пассажиры</text>
+  <rect id="svg_36" stroke-width="1.5" stroke="#D7DEEC" fill="#F8FAFD" rx="20" height="96" width="664" y="618" x="136"/>
+  <text id="svg_37" fill="#24324D" font-weight="700" font-size="18" font-family="Arial" y="656" x="160">Aleksandra Dubik</text>
+  <text id="svg_38" fill="#24324D" font-weight="700" font-size="14" font-family="Arial" y="684" x="160">Номер билета</text>
+  <text id="svg_39" fill="#52607A" font-size="14" font-family="Arial" y="684" x="272">628 1234567890</text>
+  <text id="svg_40" fill="#52607A" font-size="14" font-family="Arial" y="670" x="560">Место 12A · багаж 23 кг</text>
+  <text id="svg_41" fill="#49559F" font-weight="700" font-size="24" font-family="Arial" y="770" x="136">Документы</text>
+  <rect id="svg_42" stroke-width="1.5" stroke="#D7DEEC" fill="#FFFFFF" rx="18" height="56" width="664" y="794" x="136"/>
+  <text id="svg_43" fill="#24324D" font-size="16" font-family="Arial" y="829" x="160">Квитанция электронного билета</text>
+  <rect id="svg_44" stroke-width="1.2" stroke="#D7DEEC" fill="#FFFFFF" rx="12" height="40" width="124" y="802" x="652"/>
+  <text id="svg_45" fill="#49559F" font-weight="700" font-size="13" font-family="Arial" text-anchor="middle" y="828" x="714">Открыть</text>
+  <rect id="svg_46" stroke-width="1.5" stroke="#D7DEEC" fill="#FFFFFF" rx="18" height="56" width="664" y="866" x="136"/>
+  <text id="svg_47" fill="#24324D" font-size="16" font-family="Arial" y="901" x="160">Страховой полис</text>
+  <rect id="svg_48" stroke-width="1.2" stroke="#D7DEEC" fill="#FFFFFF" rx="12" height="40" width="124" y="874" x="652"/>
+  <text id="svg_49" fill="#49559F" font-weight="700" font-size="13" font-family="Arial" text-anchor="middle" y="900" x="714">Открыть</text>
+  <g id="svg_50" filter="url(#shadow)">
+   <rect id="svg_51" fill="#FFFFFF" rx="24" height="172" width="472" y="550" x="864"/>
+  </g>
+  <text id="svg_52" fill="#49559F" font-weight="700" font-size="24" font-family="Arial" y="594" x="896">История событий</text>
+  <circle id="svg_53" fill="#49559F" r="5" cy="636" cx="904"/>
+  <text id="svg_54" fill="#24324D" font-size="15" font-family="Arial" y="641" x="920">Оплата подтверждена · 10 марта 2026</text>
+  <circle id="svg_55" fill="#49559F" r="5" cy="668" cx="904"/>
+  <text id="svg_56" fill="#24324D" font-size="15" font-family="Arial" y="673" x="920">Документы отправлены на e-mail</text>
+  <circle id="svg_57" fill="#49559F" r="5" cy="700" cx="904"/>
+  <text id="svg_58" fill="#24324D" font-size="15" font-family="Arial" y="705" x="920">Заказ активен</text>
+  <g id="svg_59" filter="url(#shadow)">
+   <rect stroke="null" id="svg_60" fill="#FFFFFF" rx="24" height="186.63157" width="472" y="754" x="864"/>
+  </g>
+  <text id="svg_61" fill="#49559F" font-weight="700" font-size="24" font-family="Arial" y="798" x="896">Действия по заказу</text>
+  <rect id="svg_62" fill="#49559F" rx="14" height="44" width="408" y="824" x="896"/>
+  <text id="svg_63" fill="#FFFFFF" font-weight="700" font-size="14" font-family="Arial" text-anchor="middle" y="852" x="1100">Обменять билет</text>
+  <rect id="svg_64" stroke-width="1.5" stroke="#D7DEEC" fill="#FFFFFF" rx="14" height="44" width="408" y="884" x="896"/>
+  <text id="svg_65" fill="#49559F" font-weight="700" font-size="14" font-family="Arial" text-anchor="middle" y="912" x="1100">Оформить возврат</text>
+ </g>
+</svg>

@@ -1,0 +1,54 @@
+<svg width="390" height="844" xmlns="http://www.w3.org/2000/svg" fill="none">
+ <defs>
+  <filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="844" width="390" y="0" x="0" id="shadow"/>
+  <linearGradient y2="1" x2="1" y1="0" x1="0" id="bg">
+   <stop stop-color="#F5F7FC" offset="0"/>
+   <stop stop-color="#EEF2F8" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" fill="url(#bg)" rx="42" height="844" width="390"/>
+  <text id="svg_2" fill="#24324D" font-weight="700" font-size="12" font-family="Arial" y="32" x="26">9:41</text>
+  <rect id="svg_3" fill="#49559F" rx="13" height="26" width="140" y="8" x="125"/>
+  <rect id="svg_4" fill="#FFFFFF" rx="18" height="54" width="358" y="54" x="16"/>
+  <text id="svg_5" fill="#49559F" font-weight="700" font-size="24" font-family="Arial" y="88" x="30">Belavia</text>
+  <rect id="svg_6" fill="#E8252D" rx="1.5" height="3" width="64" y="92" x="30"/>
+  <text id="svg_7" fill="#49559F" font-weight="700" font-size="14" font-family="Arial" y="144" x="24">← К заказу</text>
+  <text id="svg_8" fill="#49559F" font-weight="700" font-size="28" font-family="Arial" y="184" x="24">Уведомления</text>
+  <g id="svg_9" filter="url(#shadow)">
+   <rect id="svg_10" fill="#FFFFFF" rx="22" height="82" width="342" y="202" x="24"/>
+  </g>
+  <text id="svg_11" fill="#24324D" font-weight="700" font-size="22" font-family="Arial" y="238" x="40">PNR 97BNT5</text>
+  <text id="svg_12" fill="#52607A" font-size="14" font-family="Arial" y="264" x="40">Настройки по заказу</text>
+  <g id="svg_13" filter="url(#shadow)">
+   <rect id="svg_14" fill="#FFFFFF" rx="22" height="140" width="342" y="300" x="24"/>
+  </g>
+  <text id="svg_15" fill="#49559F" font-weight="700" font-size="20" font-family="Arial" y="336" x="40">Критические</text>
+  <text id="svg_16" fill="#52607A" font-size="13" font-family="Arial" y="358" x="40">Изменение рейса и сбои</text>
+  <rect id="svg_17" fill="#EEF3FF" rx="15" height="30" width="92" y="384" x="40"/>
+  <circle id="svg_18" fill="#49559F" r="11" cy="399" cx="116"/>
+  <text id="svg_19" fill="#49559F" font-weight="700" font-size="12" font-family="Arial" text-anchor="middle" y="404" x="74">Вкл</text>
+  <rect id="svg_20" fill="#F3F6FB" rx="15" height="30" width="120" y="384" x="146"/>
+  <text id="svg_21" fill="#52607A" font-weight="700" font-size="12" font-family="Arial" text-anchor="middle" y="404" x="206">E-mail · SMS</text>
+  <g id="svg_22" filter="url(#shadow)">
+   <rect id="svg_23" fill="#FFFFFF" rx="22" height="140" width="342" y="456" x="24"/>
+  </g>
+  <text id="svg_24" fill="#49559F" font-weight="700" font-size="20" font-family="Arial" y="492" x="40">Информационные</text>
+  <text id="svg_25" fill="#52607A" font-size="13" font-family="Arial" y="514" x="40">Документы и статус заказа</text>
+  <rect id="svg_26" fill="#EEF3FF" rx="15" height="30" width="92" y="540" x="40"/>
+  <circle id="svg_27" fill="#49559F" r="11" cy="555" cx="116"/>
+  <text id="svg_28" fill="#49559F" font-weight="700" font-size="12" font-family="Arial" text-anchor="middle" y="560" x="74">Вкл</text>
+  <rect id="svg_29" fill="#F3F6FB" rx="15" height="30" width="100" y="540" x="146"/>
+  <text id="svg_30" fill="#52607A" font-weight="700" font-size="12" font-family="Arial" text-anchor="middle" y="560" x="196">E-mail</text>
+  <g id="svg_31" filter="url(#shadow)">
+   <rect id="svg_32" fill="#FFFFFF" rx="22" height="164" width="342" y="612" x="24"/>
+  </g>
+  <text id="svg_33" fill="#49559F" font-weight="700" font-size="20" font-family="Arial" y="648" x="40">Промо</text>
+  <text id="svg_34" fill="#52607A" font-size="13" font-family="Arial" y="670" x="40">Акции и предложения</text>
+  <rect id="svg_35" fill="#F3F6FB" rx="15" height="30" width="92" y="696" x="40"/>
+  <circle id="svg_36" fill="#B9C4D7" r="11" cy="711" cx="56"/>
+  <text id="svg_37" fill="#52607A" font-weight="700" font-size="12" font-family="Arial" text-anchor="middle" y="716" x="96">Выкл</text>
+  <rect id="svg_41" fill="#49559F" rx="2" height="4" width="130" y="832" x="130"/>
+ </g>
+</svg>

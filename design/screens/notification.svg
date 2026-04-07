@@ -1,0 +1,58 @@
+<svg width="1440" height="919.9999999999999" xmlns="http://www.w3.org/2000/svg" fill="none">
+ <defs>
+  <filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="920" width="1440" y="0" x="0" id="shadow"/>
+  <linearGradient y2="1" x2="1" y1="0" x1="0" id="bg">
+   <stop stop-color="#F5F7FC" offset="0"/>
+   <stop stop-color="#EEF2F8" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" fill="url(#bg)" height="920" width="1440"/>
+  <rect id="svg_2" fill-opacity="0.74" fill="#FFFFFF" rx="24" height="840" width="1360" y="40" x="40"/>
+  <rect id="svg_3" fill="#FFFFFF" rx="20" height="72" width="1296" y="64" x="72"/>
+  <text id="svg_4" fill="#49559F" font-weight="700" font-size="30" font-family="Arial" y="109" x="104">Belavia</text>
+  <rect id="svg_5" fill="#E8252D" rx="2" height="4" width="78" y="116" x="104"/>
+  <text id="svg_6" fill="#52607A" font-size="15" font-family="Arial" y="107" x="943.33327">Бронирование</text>
+  <text id="svg_7" fill="#52607A" font-size="15" font-family="Arial" y="107" x="1095.33328">Мои поездки</text>
+  <text id="svg_8" fill="#49559F" font-weight="700" font-size="15" font-family="Arial" y="108.66667" x="1218.99995">Личный кабинет</text>
+  <text id="svg_9" fill="#49559F" font-weight="700" font-size="15" font-family="Arial" y="208" x="104">← Назад к заказу</text>
+  <text id="svg_10" fill="#49559F" font-weight="700" font-size="42" font-family="Arial" y="260" x="104">Настройки уведомлений</text>
+  <g id="svg_11" filter="url(#shadow)">
+   <rect id="svg_12" fill="#FFFFFF" rx="24" height="104" width="1232" y="292" x="104"/>
+  </g>
+  <text id="svg_13" fill="#24324D" font-weight="700" font-size="28" font-family="Arial" y="336" x="136">PNR 97BNT5</text>
+  <text id="svg_14" fill="#52607A" font-size="16" font-family="Arial" y="368" x="136">Управление каналами и типами уведомлений по заказу</text>
+  <g stroke="null" id="svg_15" filter="url(#shadow)">
+   <rect stroke="null" id="svg_16" fill="#FFFFFF" rx="24" height="416.33337" width="1232" y="418.33334" x="103.00002"/>
+  </g>
+  <text id="svg_17" fill="#49559F" font-weight="700" font-size="24" font-family="Arial" y="472" x="136">Критические уведомления</text>
+  <text id="svg_18" fill="#52607A" font-size="14" font-family="Arial" y="498" x="136">Изменение времени вылета, отмена рейса, сбой операции</text>
+  <rect id="svg_19" fill="#EEF3FF" rx="16" height="32" width="120" y="452" x="1008"/>
+  <circle id="svg_20" fill="#49559F" r="12" cy="468" cx="1104"/>
+  <text id="svg_21" fill="#49559F" font-weight="700" font-size="13" font-family="Arial" text-anchor="middle" y="473" x="1068">Вкл</text>
+  <rect id="svg_22" fill="#F3F6FB" rx="16" height="32" width="160" y="452" x="1144"/>
+  <text id="svg_23" fill="#52607A" font-weight="700" font-size="13" font-family="Arial" text-anchor="middle" y="473" x="1224">E-mail · SMS</text>
+  <line id="svg_24" stroke="#E7ECF5" y2="526" x2="1304" y1="526" x1="136"/>
+  <text id="svg_25" fill="#49559F" font-weight="700" font-size="24" font-family="Arial" y="574" x="136">Информационные уведомления</text>
+  <text id="svg_26" fill="#52607A" font-size="14" font-family="Arial" y="600" x="136">Отправка документов, статус заказа, напоминания по поездке</text>
+  <rect id="svg_27" fill="#EEF3FF" rx="16" height="32" width="120" y="554" x="1008"/>
+  <circle id="svg_28" fill="#49559F" r="12" cy="570" cx="1104"/>
+  <text id="svg_29" fill="#49559F" font-weight="700" font-size="13" font-family="Arial" text-anchor="middle" y="575" x="1068">Вкл</text>
+  <rect id="svg_30" fill="#F3F6FB" rx="16" height="32" width="160" y="554" x="1144"/>
+  <text id="svg_31" fill="#52607A" font-weight="700" font-size="13" font-family="Arial" text-anchor="middle" y="575" x="1224">E-mail</text>
+  <line id="svg_32" stroke="#E7ECF5" y2="628" x2="1304" y1="628" x1="136"/>
+  <text id="svg_33" fill="#49559F" font-weight="700" font-size="24" font-family="Arial" y="676" x="136">Промо и предложения</text>
+  <text id="svg_34" fill="#52607A" font-size="14" font-family="Arial" y="702" x="136">Акции, специальные тарифы, дополнительные услуги</text>
+  <rect id="svg_35" fill="#F3F6FB" rx="16" height="32" width="120" y="656" x="1008"/>
+  <circle id="svg_36" fill="#B9C4D7" r="12" cy="672" cx="1032"/>
+  <text id="svg_37" fill="#52607A" font-weight="700" font-size="13" font-family="Arial" text-anchor="middle" y="677" x="1080">Выкл</text>
+  <rect id="svg_38" fill="#F3F6FB" rx="16" height="32" width="160" y="656" x="1144"/>
+  <text id="svg_39" fill="#52607A" font-weight="700" font-size="13" font-family="Arial" text-anchor="middle" y="677" x="1224">Не выбрано</text>
+  <line id="svg_40" stroke="#E7ECF5" y2="730" x2="1304" y1="730" x1="136"/>
+  <text id="svg_41" fill="#24324D" font-weight="700" font-size="20" font-family="Arial" y="778" x="136">Подтвержденный телефон</text>
+  <text id="svg_42" fill="#52607A" font-size="14" font-family="Arial" y="804" x="136">+375 29 000-00-00</text>
+  <rect id="svg_43" fill="#49559F" rx="14" height="44" width="196" y="760" x="1108"/>
+  <text id="svg_44" fill="#FFFFFF" font-weight="700" font-size="14" font-family="Arial" text-anchor="middle" y="788" x="1206">Изменить номер</text>
+ </g>
+</svg>

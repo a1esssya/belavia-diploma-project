@@ -1,0 +1,47 @@
+<svg width="390" height="844" xmlns="http://www.w3.org/2000/svg" fill="none">
+ <defs>
+  <filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="844" width="390" y="0" x="0" id="shadow"/>
+  <linearGradient y2="1" x2="1" y1="0" x1="0" id="bg">
+   <stop stop-color="#F5F7FC" offset="0"/>
+   <stop stop-color="#EEF2F8" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" fill="url(#bg)" rx="42" height="844" width="390"/>
+  <text id="svg_2" fill="#24324D" font-weight="700" font-size="12" font-family="Arial" y="32" x="26">9:41</text>
+  <rect id="svg_3" fill="#49559F" rx="13" height="26" width="140" y="8" x="125"/>
+  <rect id="svg_4" fill="#FFFFFF" rx="18" height="54" width="358" y="54" x="16"/>
+  <text id="svg_5" fill="#49559F" font-weight="700" font-size="24" font-family="Arial" y="88" x="30">Belavia</text>
+  <rect id="svg_6" fill="#E8252D" rx="1.5" height="3" width="64" y="92" x="30"/>
+  <text id="svg_7" fill="#49559F" font-weight="700" font-size="14" font-family="Arial" y="144" x="24">← К заказу</text>
+  <text id="svg_8" fill="#49559F" font-weight="700" font-size="28" font-family="Arial" y="184" x="24">История</text>
+  <g id="svg_9" filter="url(#shadow)">
+   <rect id="svg_10" fill="#FFFFFF" rx="22" height="82" width="342" y="202" x="24"/>
+  </g>
+  <text id="svg_11" fill="#24324D" font-weight="700" font-size="22" font-family="Arial" y="238" x="40">PNR 97BNT5</text>
+  <text id="svg_12" fill="#52607A" font-size="14" font-family="Arial" y="264" x="40">MSQ → IST · 12 марта 2026</text>
+  <g id="svg_13" filter="url(#shadow)">
+   <rect id="svg_14" fill="#FFFFFF" rx="22" height="372" width="342" y="300" x="24"/>
+  </g>
+  <path stroke="#C8D3E6" id="svg_15" d="m52,338l0,250" opacity="undefined" stroke-width="2"/>
+  <circle id="svg_16" fill="#EEF3FF" r="11" cy="338" cx="52"/>
+  <circle id="svg_17" fill="#49559F" r="4.5" cy="338" cx="52"/>
+  <text id="svg_18" fill="#24324D" font-weight="700" font-size="13" font-family="Arial" y="332" x="76">10 марта 2026 · 09:14</text>
+  <text id="svg_19" fill="#24324D" font-weight="700" font-size="16" font-family="Arial" y="356" x="76">Оплата подтверждена</text>
+  <text id="svg_20" fill="#52607A" font-size="13" font-family="Arial" y="378" x="76">Заказ успешно оплачен</text>
+  <circle id="svg_21" fill="#EEF3FF" r="11" cy="430" cx="52"/>
+  <circle id="svg_22" fill="#49559F" r="4.5" cy="430" cx="52"/>
+  <text id="svg_23" fill="#24324D" font-weight="700" font-size="13" font-family="Arial" y="424" x="76">10 марта 2026 · 09:16</text>
+  <text id="svg_24" fill="#24324D" font-weight="700" font-size="16" font-family="Arial" y="448" x="76">Документы отправлены</text>
+  <text id="svg_25" fill="#52607A" font-size="13" font-family="Arial" y="470" x="76">Билет отправлен на e-mail</text>
+  <circle id="svg_26" fill="#EEF3FF" r="11" cy="522" cx="52"/>
+  <circle id="svg_27" fill="#49559F" r="4.5" cy="522" cx="52"/>
+  <text id="svg_28" fill="#24324D" font-weight="700" font-size="13" font-family="Arial" y="516" x="76">10 марта 2026 · 09:17</text>
+  <text id="svg_29" fill="#24324D" font-weight="700" font-size="16" font-family="Arial" y="540" x="76">Заказ активен</text>
+  <text id="svg_30" fill="#52607A" font-size="13" font-family="Arial" y="562" x="76">Доступны действия по заказу</text>
+  <rect id="svg_31" fill="#49559F" rx="12" height="40" width="310" y="612" x="40"/>
+  <text id="svg_32" fill="#FFFFFF" font-weight="700" font-size="14" font-family="Arial" text-anchor="middle" y="638" x="195">Вернуться к заказу</text>
+  <rect id="svg_33" fill="#49559F" rx="2" height="4" width="130" y="832" x="130"/>
+ </g>
+</svg>

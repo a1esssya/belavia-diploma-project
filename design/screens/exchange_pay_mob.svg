@@ -1,0 +1,48 @@
+<svg width="390" height="844" xmlns="http://www.w3.org/2000/svg" fill="none">
+ <defs>
+  <filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="844" width="390" y="0" x="0" id="shadow"/>
+  <linearGradient y2="1" x2="1" y1="0" x1="0" id="bg">
+   <stop stop-color="#F5F7FC" offset="0"/>
+   <stop stop-color="#EEF2F8" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" fill="url(#bg)" rx="42" height="844" width="390"/>
+  <text id="svg_2" fill="#24324D" font-weight="700" font-size="12" font-family="Arial" y="32" x="26">9:41</text>
+  <rect id="svg_3" fill="#49559F" rx="13" height="26" width="140" y="8" x="125"/>
+  <rect id="svg_4" fill="#FFFFFF" rx="18" height="54" width="358" y="54" x="16"/>
+  <text id="svg_5" fill="#49559F" font-weight="700" font-size="24" font-family="Arial" y="88" x="30">Belavia</text>
+  <rect id="svg_6" fill="#E8252D" rx="1.5" height="3" width="64" y="92" x="30"/>
+  <text id="svg_7" fill="#49559F" font-weight="700" font-size="14" font-family="Arial" y="144" x="24">← К выбору параметров</text>
+  <text id="svg_8" fill="#49559F" font-weight="700" font-size="28" font-family="Arial" y="184" x="24">Расчет доплаты</text>
+  <g id="svg_9" filter="url(#shadow)">
+   <rect id="svg_10" fill="#FFFFFF" rx="22" height="82" width="342" y="202" x="24"/>
+  </g>
+  <text id="svg_11" fill="#24324D" font-weight="700" font-size="22" font-family="Arial" y="238" x="40">PNR 97BNT5</text>
+  <text id="svg_12" fill="#52607A" font-size="14" font-family="Arial" y="264" x="40">MSQ → IST · 15 марта 2026</text>
+  <g id="svg_13" filter="url(#shadow)">
+   <rect id="svg_14" fill="#FFFFFF" rx="22" height="236" width="342" y="300" x="24"/>
+  </g>
+  <text id="svg_15" fill="#49559F" font-weight="700" font-size="20" font-family="Arial" y="336" x="40">Состав расчета</text>
+  <rect id="svg_16" fill="#F8FAFD" rx="14" height="44" width="310" y="354" x="40"/>
+  <text id="svg_17" fill="#24324D" font-size="14" font-family="Arial" y="381" x="56">Разница тарифа</text>
+  <text id="svg_18" fill="#24324D" font-weight="700" font-size="14" font-family="Arial" text-anchor="end" y="381" x="334">120 BYN</text>
+  <rect id="svg_19" fill="#F8FAFD" rx="14" height="44" width="310" y="410" x="40"/>
+  <text id="svg_20" fill="#24324D" font-size="14" font-family="Arial" y="437" x="56">Штраф за обмен</text>
+  <text id="svg_21" fill="#24324D" font-weight="700" font-size="14" font-family="Arial" text-anchor="end" y="437" x="334">60 BYN</text>
+  <rect id="svg_22" fill="#F8FAFD" rx="14" height="44" width="310" y="466" x="40"/>
+  <text id="svg_23" fill="#24324D" font-size="14" font-family="Arial" y="493" x="56">Сбор за переоформление</text>
+  <text id="svg_24" fill="#24324D" font-weight="700" font-size="14" font-family="Arial" text-anchor="end" y="493" x="334">15 BYN</text>
+  <g id="svg_25" filter="url(#shadow)">
+   <rect id="svg_26" fill="#FFFFFF" rx="22" height="192" width="342" y="552" x="24"/>
+  </g>
+  <text id="svg_27" fill="#49559F" font-weight="700" font-size="20" font-family="Arial" y="588" x="40">Итог</text>
+  <text id="svg_28" fill="#52607A" font-size="13" font-family="Arial" y="614" x="40">Новый рейс: 15 марта · 08:30 — 13:05</text>
+  <rect id="svg_29" fill="#EEF3FF" rx="14" height="42" width="310" y="630" x="40"/>
+  <text id="svg_30" fill="#49559F" font-weight="700" font-size="13" font-family="Arial" y="656" x="56">Срок действия расчета — 15 минут</text>
+  <text id="svg_31" fill="#24324D" font-weight="700" font-size="16" font-family="Arial" y="710.61538" x="40">Итого к оплате</text>
+  <text id="svg_32" fill="#49559F" font-weight="700" font-size="24" font-family="Arial" text-anchor="end" y="710.61538" x="350">195 BYN</text>
+  <rect id="svg_35" fill="#49559F" rx="2" height="4" width="130" y="832" x="130"/>
+ </g>
+</svg>

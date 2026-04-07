@@ -1,0 +1,51 @@
+<svg width="1440" height="900" xmlns="http://www.w3.org/2000/svg" fill="none">
+ <defs>
+  <filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="900" width="1440" y="0" x="0" id="shadow"/>
+  <linearGradient y2="1" x2="1" y1="0" x1="0" id="bg">
+   <stop stop-color="#F5F7FC" offset="0"/>
+   <stop stop-color="#EEF2F8" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" fill="url(#bg)" height="900" width="1440"/>
+  <rect id="svg_2" fill-opacity="0.74" fill="#FFFFFF" rx="24" height="820" width="1360" y="40" x="40"/>
+  <rect id="svg_3" fill="#FFFFFF" rx="20" height="72" width="1296" y="64" x="72"/>
+  <text id="svg_4" fill="#49559F" font-weight="700" font-size="30" font-family="Arial" y="109" x="104">Belavia</text>
+  <rect id="svg_5" fill="#E8252D" rx="2" height="4" width="78" y="116" x="104"/>
+  <text id="svg_6" fill="#52607A" font-size="15" font-family="Arial" y="107" x="952.31189">Бронирование</text>
+  <text stroke="null" id="svg_7" fill="#52607A" font-size="15" font-family="Arial" y="107" x="1094.31189">Мои поездки</text>
+  <text id="svg_8" fill="#49559F" font-weight="700" font-size="15" font-family="Arial" y="107" x="1224.00352">Личный кабинет</text>
+  <text id="svg_9" fill="#49559F" font-weight="700" font-size="52" font-family="Arial" y="270" x="128">Личный кабинет</text>
+  <text id="svg_10" fill="#49559F" font-weight="700" font-size="52" font-family="Arial" y="330" x="128">Belavia</text>
+  <text id="svg_11" fill="#52607A" font-size="20" font-family="Arial" y="390" x="128">Заказы, документы, история и мили</text>
+  <text id="svg_12" fill="#52607A" font-size="20" font-family="Arial" y="422" x="128">в одном цифровом контуре</text>
+  <circle id="svg_13" fill="#E8252D" r="5" cy="484" cx="136"/>
+  <text id="svg_14" fill="#24324D" font-size="17" font-family="Arial" y="490" x="156">Прозрачные статусы по заказу</text>
+  <circle id="svg_15" fill="#E8252D" r="5" cy="524" cx="136"/>
+  <text id="svg_16" fill="#24324D" font-size="17" font-family="Arial" y="530" x="156">Быстрый доступ к документам</text>
+  <circle id="svg_17" fill="#E8252D" r="5" cy="564" cx="136"/>
+  <text id="svg_18" fill="#24324D" font-size="17" font-family="Arial" y="570" x="156">Самостоятельный обмен и возврат</text>
+  <g stroke="null" style="vector-effect: non-scaling-stroke;" id="svg_19" filter="url(#shadow)">
+   <rect stroke="null" style="vector-effect: non-scaling-stroke;" id="svg_20" fill="#FFFFFF" rx="28" height="497.94227" width="482" y="201.75289" x="760"/>
+  </g>
+  <text id="svg_21" fill="#49559F" font-weight="700" font-size="34" font-family="Arial" y="252.75209" x="801.25007">Вход в личный кабинет</text>
+  <rect id="svg_23" stroke-width="2" stroke="#D7DEEC" fill="#F8FAFD" rx="16" height="60" width="402" y="286" x="800"/>
+  <text id="svg_24" fill="#6C7791" font-size="16" font-family="Arial" y="323" x="824">Электронная почта или номер участника</text>
+  <rect id="svg_25" stroke-width="2" stroke="#D7DEEC" fill="#F8FAFD" rx="16" height="60" width="402" y="382" x="800"/>
+  <text id="svg_26" fill="#6C7791" font-size="16" font-family="Arial" y="419" x="824">Пароль</text>
+  <text id="svg_28" fill="#49559F" font-weight="700" font-size="14" font-family="Arial" y="478" x="800">Забыли пароль?</text>
+  <rect id="svg_29" fill="#49559F" rx="16" height="60" width="402" y="506" x="800"/>
+  <text id="svg_30" fill="#FFFFFF" font-weight="700" font-size="19" font-family="Arial" text-anchor="middle" y="544" x="1001">Войти и проверить мили</text>
+  <line id="svg_31" stroke-width="2" stroke="#D7DEEC" y2="602" x2="936" y1="602" x1="800"/>
+  <text id="svg_32" fill="#6C7791" font-size="13" font-family="Arial" text-anchor="middle" y="607" x="1001">или быстрый вход</text>
+  <line id="svg_33" stroke-width="2" stroke="#D7DEEC" y2="602" x2="1202" y1="602" x1="1066"/>
+  <rect id="svg_34" stroke-width="2" stroke="#D7DEEC" fill="#FFFFFF" rx="14" height="48" width="193" y="626" x="800"/>
+  <circle id="svg_35" fill="#E8252D" r="8" cy="650" cx="828"/>
+  <text id="svg_36" fill="#24324D" font-weight="700" font-size="16" font-family="Arial" text-anchor="middle" y="656" x="897">Google</text>
+  <rect id="svg_37" stroke-width="2" stroke="#D7DEEC" fill="#FFFFFF" rx="14" height="48" width="193" y="626" x="1009"/>
+  <circle id="svg_38" fill="#49559F" r="8" cy="650" cx="1037"/>
+  <text id="svg_39" fill="#24324D" font-weight="700" font-size="16" font-family="Arial" text-anchor="middle" y="656" x="1106">Apple ID</text>
+  <path id="svg_40" d="m1166.86483,406.78121c-8.3849,0 -15.00082,7.49992 -15.00082,7.49992s6.61592,7.50089 15.00082,7.50089c6.41257,0 15.00082,-7.50089 15.00082,-7.50089s-8.58825,-7.49992 -15.00082,-7.49992zm0,12.17351c-2.94349,0 -5.3414,-2.09714 -5.3414,-4.67359s2.39791,-4.67359 5.3414,-4.67359s5.3414,2.09811 5.3414,4.67359s-2.39791,4.67359 -5.3414,4.67359zm0,-7.40172c-1.72121,0 -3.11795,1.22114 -3.11795,2.72813c0,1.50698 1.39563,2.72813 3.11795,2.72813c1.72232,0 3.11795,-1.22114 3.11795,-2.72813c0,-1.50601 -1.39563,-2.72813 -3.11795,-2.72813z" fill="#49559F"/>
+ </g>
+</svg>

@@ -1,0 +1,56 @@
+<svg width="1439.9999999999998" height="920.0000000000001" xmlns="http://www.w3.org/2000/svg" fill="none">
+ <defs>
+  <filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="920" width="1440" y="0" x="0" id="shadow"/>
+  <linearGradient y2="1" x2="1" y1="0" x1="0" id="bg">
+   <stop stop-color="#F5F7FC" offset="0"/>
+   <stop stop-color="#EEF2F8" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" fill="url(#bg)" height="920" width="1440"/>
+  <rect id="svg_2" fill-opacity="0.74" fill="#FFFFFF" rx="24" height="840" width="1360" y="40" x="40"/>
+  <rect id="svg_3" fill="#FFFFFF" rx="20" height="72" width="1296" y="64" x="72"/>
+  <text id="svg_4" fill="#49559F" font-weight="700" font-size="30" font-family="Arial" y="109" x="104">Belavia</text>
+  <rect id="svg_5" fill="#E8252D" rx="2" height="4" width="78" y="116" x="104"/>
+  <text id="svg_6" fill="#52607A" font-size="15" font-family="Arial" y="108.33333" x="956.00007">Бронирование</text>
+  <text id="svg_7" fill="#52607A" font-size="15" font-family="Arial" y="108.33333" x="1098.00007">Мои поездки</text>
+  <text id="svg_8" fill="#49559F" font-weight="700" font-size="15" font-family="Arial" y="109.66666" x="1224.00006">Личный кабинет</text>
+  <text id="svg_9" fill="#49559F" font-weight="700" font-size="15" font-family="Arial" y="208" x="104">← Назад к выбору параметров</text>
+  <text id="svg_10" fill="#49559F" font-weight="700" font-size="42" font-family="Arial" y="260" x="104">Расчет доплаты</text>
+  <g id="svg_11" filter="url(#shadow)">
+   <rect id="svg_12" fill="#FFFFFF" rx="24" height="112" width="1232" y="292" x="104"/>
+  </g>
+  <text id="svg_13" fill="#24324D" font-weight="700" font-size="28" font-family="Arial" y="338" x="136">PNR 97BNT5</text>
+  <text id="svg_14" fill="#52607A" font-size="16" font-family="Arial" y="372" x="136">Обмен MSQ → IST · новая дата 15 марта 2026</text>
+  <g id="svg_15" filter="url(#shadow)">
+   <rect id="svg_16" fill="#FFFFFF" rx="24" height="360" width="792" y="436" x="104"/>
+  </g>
+  <text id="svg_17" fill="#49559F" font-weight="700" font-size="24" font-family="Arial" y="480" x="136">Из чего складывается итог</text>
+  <rect id="svg_18" fill="#F8FAFD" rx="18" height="64" width="728" y="512" x="136"/>
+  <text id="svg_19" fill="#24324D" font-size="18" font-family="Arial" y="550" x="160">Разница тарифа</text>
+  <text id="svg_20" fill="#24324D" font-weight="700" font-size="18" font-family="Arial" text-anchor="end" y="550" x="840">120 BYN</text>
+  <rect id="svg_21" fill="#F8FAFD" rx="18" height="64" width="728" y="592" x="136"/>
+  <text id="svg_22" fill="#24324D" font-size="18" font-family="Arial" y="630" x="160">Штраф за обмен</text>
+  <text id="svg_23" fill="#24324D" font-weight="700" font-size="18" font-family="Arial" text-anchor="end" y="630" x="840">60 BYN</text>
+  <rect id="svg_24" fill="#F8FAFD" rx="18" height="64" width="728" y="672" x="136"/>
+  <text id="svg_25" fill="#24324D" font-size="18" font-family="Arial" y="710" x="160">Сбор за переоформление</text>
+  <text id="svg_26" fill="#24324D" font-weight="700" font-size="18" font-family="Arial" text-anchor="end" y="710" x="840">15 BYN</text>
+  <g id="svg_27" filter="url(#shadow)">
+   <rect id="svg_28" fill="#FFFFFF" rx="24" height="360" width="408" y="436" x="928"/>
+  </g>
+  <text id="svg_29" fill="#49559F" font-weight="700" font-size="24" font-family="Arial" y="480" x="960">Сводка</text>
+  <rect id="svg_30" fill="#F8FAFD" rx="18" height="92" width="344" y="512" x="960"/>
+  <text id="svg_31" fill="#24324D" font-weight="700" font-size="18" font-family="Arial" y="544" x="984">Новый рейс</text>
+  <text id="svg_32" fill="#52607A" font-size="14" font-family="Arial" y="570" x="984">15 марта · 08:30 — 13:05</text>
+  <text id="svg_33" fill="#52607A" font-size="14" font-family="Arial" y="592" x="984">MSQ → IST · B2 785</text>
+  <rect id="svg_34" fill="#EEF3FF" rx="18" height="72" width="344" y="624" x="960"/>
+  <text id="svg_35" fill="#49559F" font-weight="700" font-size="14" font-family="Arial" y="654" x="984">Срок действия расчета</text>
+  <text id="svg_36" fill="#24324D" font-weight="700" font-size="16" font-family="Arial" y="680" x="984">15 минут</text>
+  <line id="svg_37" stroke="#E7ECF5" y2="724" x2="1304" y1="724" x1="960"/>
+  <text id="svg_38" fill="#24324D" font-weight="700" font-size="18" font-family="Arial" y="756" x="960">Итого к оплате</text>
+  <text id="svg_39" fill="#49559F" font-weight="700" font-size="26" font-family="Arial" text-anchor="end" y="756" x="1304">195 BYN</text>
+  <rect id="svg_40" fill="#49559F" rx="14" height="44" width="196" y="816" x="1108"/>
+  <text id="svg_41" fill="#FFFFFF" font-weight="700" font-size="14" font-family="Arial" text-anchor="middle" y="844" x="1206">Перейти к оплате</text>
+ </g>
+</svg>

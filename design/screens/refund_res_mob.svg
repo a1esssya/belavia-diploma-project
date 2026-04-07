@@ -1,0 +1,38 @@
+<svg width="390" height="844" xmlns="http://www.w3.org/2000/svg" fill="none">
+ <defs>
+  <filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="844" width="390" y="0" x="0" id="shadow"/>
+  <linearGradient y2="1" x2="1" y1="0" x1="0" id="bg">
+   <stop stop-color="#F5F7FC" offset="0"/>
+   <stop stop-color="#EEF2F8" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" fill="url(#bg)" rx="42" height="844" width="390"/>
+  <text id="svg_2" fill="#24324D" font-weight="700" font-size="12" font-family="Arial" y="32" x="26">9:41</text>
+  <rect id="svg_3" fill="#49559F" rx="13" height="26" width="140" y="8" x="125"/>
+  <rect id="svg_4" fill="#FFFFFF" rx="18" height="54" width="358" y="54" x="16"/>
+  <text id="svg_5" fill="#49559F" font-weight="700" font-size="24" font-family="Arial" y="88" x="30">Belavia</text>
+  <rect id="svg_6" fill="#E8252D" rx="1.5" height="3" width="64" y="92" x="30"/>
+  <text id="svg_7" fill="#49559F" font-weight="700" font-size="14" font-family="Arial" y="144" x="24">← К расчету</text>
+  <text id="svg_8" fill="#49559F" font-weight="700" font-size="28" font-family="Arial" y="184" x="24">Результат возврата</text>
+  <g id="svg_9" filter="url(#shadow)">
+   <rect id="svg_10" fill="#FFFFFF" rx="22" height="82" width="342" y="202" x="24"/>
+  </g>
+  <text id="svg_11" fill="#24324D" font-weight="700" font-size="22" font-family="Arial" y="238" x="40">PNR 97BNT5</text>
+  <text id="svg_12" fill="#52607A" font-size="14" font-family="Arial" y="264" x="40">MSQ → IST · возврат оформлен</text>
+  <g stroke="null" style="vector-effect: non-scaling-stroke;" id="svg_13" filter="url(#shadow)">
+   <rect stroke="null" style="vector-effect: non-scaling-stroke;" id="svg_14" fill="#FFFFFF" rx="22" height="303.00002" width="342" y="300" x="24"/>
+  </g>
+  <circle id="svg_15" fill="#EEF3FF" r="24" cy="354" cx="195"/>
+  <path id="svg_16" stroke-linejoin="round" stroke-linecap="round" stroke-width="4" stroke="#49559F" d="m183,354l8,8l16,-16"/>
+  <text id="svg_17" fill="#24324D" font-weight="700" font-size="24" font-family="Arial" text-anchor="middle" y="408" x="195">Возврат оформлен</text>
+  <text id="svg_18" fill="#52607A" font-size="14" font-family="Arial" text-anchor="middle" y="438" x="195">Изменения уже отражены в заказе</text>
+  <text id="svg_19" fill="#52607A" font-size="14" font-family="Arial" text-anchor="middle" y="462" x="195">Ожидаемая сумма — 390 BYN</text>
+  <rect id="svg_20" stroke="#D7DEEC" fill="#FFFFFF" rx="12" height="40" width="310" y="490" x="40"/>
+  <text id="svg_21" fill="#49559F" font-weight="700" font-size="14" font-family="Arial" text-anchor="middle" y="516" x="195">История событий</text>
+  <rect id="svg_22" fill="#49559F" rx="12" height="40" width="310" y="542" x="40"/>
+  <text id="svg_23" fill="#FFFFFF" font-weight="700" font-size="14" font-family="Arial" text-anchor="middle" y="568" x="195">Вернуться в кабинет</text>
+  <rect id="svg_24" fill="#49559F" rx="2" height="4" width="130" y="832" x="130"/>
+ </g>
+</svg>

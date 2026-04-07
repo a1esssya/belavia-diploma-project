@@ -1,0 +1,37 @@
+<svg width="390" height="844" xmlns="http://www.w3.org/2000/svg" fill="none">
+ <defs>
+  <filter id="shadow" x="0" y="0" width="390" height="844" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"/>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+   <stop offset="0" stop-color="#F5F7FC"/>
+   <stop offset="1" stop-color="#EEF2F8"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <rect width="390" height="844" rx="42" fill="url(#bg)" id="svg_1"/>
+  <text x="26" y="32" font-family="Arial" font-size="12" font-weight="700" fill="#24324D" id="svg_2">9:41</text>
+  <rect x="125" y="8" width="140" height="26" rx="13" fill="#49559F" id="svg_3"/>
+  <rect x="16" y="54" width="358" height="54" rx="18" fill="#FFFFFF" id="svg_4"/>
+  <text x="30" y="88" font-family="Arial" font-size="24" font-weight="700" fill="#49559F" id="svg_5">Belavia</text>
+  <rect x="30" y="92" width="64" height="3" rx="1.5" fill="#E8252D" id="svg_6"/>
+  <g filter="url(#shadow)" id="svg_7" stroke="null">
+   <rect x="16" y="156" width="358" height="432" rx="24" fill="#FFFFFF" id="svg_8" stroke="null"/>
+  </g>
+  <text x="32" y="202" font-family="Arial" font-size="28" font-weight="700" fill="#49559F" id="svg_9">Вход в кабинет</text>
+  <rect x="32" y="228" width="326" height="52" rx="16" fill="#F8FAFD" stroke="#D7DEEC" id="svg_10"/>
+  <text x="48" y="260" font-family="Arial" font-size="16" fill="#6C7791" id="svg_11">Почта или номер участника</text>
+  <path id="svg_12" d="m32,320c0,-8.69406 7.30594,-16 16,-16l294,0c8.69406,0 16,7.30594 16,16l0,20c0,8.69406 -7.30594,16 -16,16l-294,0c-8.69406,0 -16,-7.30594 -16,-16l0,-20z" opacity="undefined" stroke="#D7DEEC" fill="#F8FAFD"/>
+  <path fill="#49559F" stroke-width="0.8" d="m329.42759,326.00328c-6.14859,0 -11,5.9996 -11,5.9996s4.85141,6.00037 11,6.00037c4.7023,0 11,-6.00037 11,-6.00037s-6.2977,-5.9996 -11,-5.9996zm0,9.73826c-2.15844,0 -3.91681,-1.67762 -3.91681,-3.73866s1.75837,-3.73866 3.91681,-3.73866s3.91681,1.67839 3.91681,3.73866s-1.75837,3.73866 -3.91681,3.73866zm0,-5.92104c-1.26215,0 -2.28637,0.97686 -2.28637,2.18238c0,1.20552 1.02341,2.18238 2.28637,2.18238c1.26296,0 2.28637,-0.97686 2.28637,-2.18238c0,-1.20474 -1.02341,-2.18238 -2.28637,-2.18238z" id="svg_25"/>
+  <text x="48" y="336" font-family="Arial" font-size="16" fill="#6C7791" id="svg_13">Пароль</text>
+  <text x="32" y="388" font-family="Arial" font-size="13" font-weight="700" fill="#49559F" id="svg_15">Забыли пароль?</text>
+  <rect x="32" y="412" width="326" height="54" rx="18" fill="#49559F" id="svg_16"/>
+  <text x="195" y="446" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#FFFFFF" id="svg_17">Войти и проверить мили</text>
+  <line x1="32" y1="496" x2="128" y2="496" stroke="#D7DEEC" id="svg_18"/>
+  <text x="195" y="501" text-anchor="middle" font-family="Arial" font-size="12" fill="#6C7791" id="svg_19">или</text>
+  <line x1="262" y1="496" x2="358" y2="496" stroke="#D7DEEC" id="svg_20"/>
+  <rect x="32" y="518" width="326" height="44" rx="14" fill="#FFFFFF" stroke="#D7DEEC" id="svg_21"/>
+  <circle cx="60" cy="540" r="8" fill="#E8252D" id="svg_22"/>
+  <text x="195" y="546" text-anchor="middle" font-family="Arial" font-size="15" font-weight="700" fill="#24324D" id="svg_23">Вход через Google</text>
+  <rect x="130" y="832" width="130" height="4" rx="2" fill="#49559F" id="svg_24"/>
+ </g>
+</svg>

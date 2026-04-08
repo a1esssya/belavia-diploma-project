@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrderStatus {
+  UPCOMING
+  PAST
+  CANCELLED
+}
+
+enum OperationStatus {
+  PROCESSING
+  SUCCEEDED
+  FAILED
+}
+
+model User {
+  id        String          @id @default(cuid())
+  email     String          @unique
+  createdAt DateTime        @default(now())
+  sessions  Session[]
+  links     UserOrderLink[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  otpCode   String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserOrderLink {
+  id      String @id @default(cuid())
+  userId  String
+  orderId String
+
+  user  User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  order OrderShowcase @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, orderId])
+}
+
+model OrderShowcase {
+  id                String              @id @default(cuid())
+  pnr               String              @unique
+  ticketNumber      String              @unique
+  passengerLastName String
+  route             String
+  departureAt       DateTime
+  status            OrderStatus
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  events            OrderEvent[]
+  links             UserOrderLink[]
+  exchanges         ExchangeOperation[]
+  refunds           RefundOperation[]
+}
+
+model OrderEvent {
+  id        String   @id @default(cuid())
+  orderId   String
+  type      String
+  message   String
+  createdAt DateTime @default(now())
+
+  order OrderShowcase @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model ExchangeOperation {
+  id          String          @id @default(cuid())
+  orderId      String
+  quoteAmount  Decimal         @db.Decimal(10, 2)
+  currency     String          @default("EUR")
+  status       OperationStatus @default(PROCESSING)
+  createdAt    DateTime        @default(now())
+  idempotencyKey String?
+
+  order OrderShowcase @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model RefundOperation {
+  id            String          @id @default(cuid())
+  orderId        String
+  quoteAmount    Decimal         @db.Decimal(10, 2)
+  currency       String          @default("EUR")
+  status         OperationStatus @default(PROCESSING)
+  createdAt      DateTime        @default(now())
+  idempotencyKey String?
+
+  order OrderShowcase @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model IdempotencyKey {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  operation   String
+  responseRef String?
+  createdAt   DateTime @default(now())
+}

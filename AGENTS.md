@@ -120,7 +120,7 @@
 - frontend;
 - backend;
 - docker-compose;
-- env.example;
+- .env.example;
 - базовый README;
 - Prisma schema;
 - seed scaffolding.

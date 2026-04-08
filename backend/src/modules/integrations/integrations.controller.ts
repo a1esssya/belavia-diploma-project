@@ -4,6 +4,6 @@ import { Controller, Get } from '@nestjs/common';
 export class IntegrationsController {
   @Get('health')
   getHealth() {
-    return { module: 'integrations', status: 'scaffolded' };
+    return { module: 'integrations', provider: 'mock-leonardo', status: 'ready' };
   }
 }

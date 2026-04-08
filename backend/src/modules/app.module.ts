@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { DatabaseModule } from '../common/database.module';
+import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { BookingLookupModule } from './booking-lookup/booking-lookup.module';
 import { DocumentsModule } from './documents/documents.module';
@@ -12,6 +13,7 @@ import { OrdersModule } from './orders/orders.module';
 import { RefundModule } from './refund/refund.module';
 
 @Module({
+  controllers: [AppController],
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,

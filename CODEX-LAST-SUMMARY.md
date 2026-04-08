@@ -1,85 +1,84 @@
-# Backend First-Phase Summary
+# Frontend First-Wave Summary
 
 ## Scope
 
-Реализована серверная часть первой очереди личного кабинета Belavia в рамках post-booking self-service:
+Реализован frontend первой очереди личного кабинета Belavia поверх уже готового backend API:
 
-- Prisma schema и миграция для минимального набора сущностей первой очереди
-- seed-данные с тестовым пользователем, заказами, документами и историей
-- AuthModule, OrdersModule, DocumentsModule, HistoryModule, ExchangeModule, RefundModule, BookingLookupModule, IntegrationsModule
-- mock PSS Leonardo через backend gateway
-- public API первой очереди
-- idempotency для confirm exchange/refund
-- рабочий `GET /health`
+- login по email OTP
+- список заказов
+- карточка заказа
+- документы и resend документов
+- история событий
+- booking lookup без авторизации
+- exchange quote-flow
+- refund quote-flow
 
-## Data Model
+Подтверждение `confirm exchange/refund` не доводилось до финальной UI-полировки в рамках этого шага, как и было запрошено.
 
-В Prisma реализованы:
+## Frontend Routes
 
-- `users`
-- `sessions`
-- `user_order_links`
-- `orders_showcase`
-- `order_events`
-- `exchange_operations`
-- `refund_operations`
-- `idempotency_keys`
+Готовые маршруты:
 
-Дополнительно используется таблица `order_documents` для функции доступа к документам и resend.
+- `/login`
+- `/trips`
+- `/orders/:orderId`
+- `/orders/:orderId/documents`
+- `/orders/:orderId/history`
+- `/orders/:orderId/exchange`
+- `/orders/:orderId/refund`
+- `/booking-status`
 
-## Seed
+## UI Components
 
-Seed покрывает:
+Добавлены reusable React + Tailwind компоненты:
 
-- 1 тестового пользователя: `demo@belavia.by`
-- будущий заказ с доступным exchange/refund
-- будущий заказ с exchange с доплатой
-- будущий заказ с недоступным refund
-- отменённый заказ
-- заказ со сценарием ошибки commit на стороне mock PSS
-- документы и стартовые события
+- `AppShell`
+- `PageHeader`
+- `PrimaryButton`
+- `SecondaryButton`
+- `TextInput`
+- `StatusBadge`
+- `OrderCard`
+- `DocumentRow`
+- `EventTimeline`
+- `QuoteSummary`
+- `EmptyState`
+- `ErrorState`
 
-## API
+## Frontend Architecture
 
-Готовые endpoints:
+Добавлено:
 
-- `GET /health`
-- `POST /v1/auth/login/start`
-- `POST /v1/auth/login/verify`
-- `POST /v1/auth/logout`
-- `GET /v1/me`
-- `GET /v1/orders`
-- `GET /v1/orders/:orderId`
-- `GET /v1/orders/:orderId/documents`
-- `POST /v1/orders/:orderId/documents/resend`
-- `GET /v1/orders/:orderId/events`
-- `POST /v1/booking/lookup`
-- `POST /v1/orders/:orderId/exchange/quote`
-- `POST /v1/orders/:orderId/exchange/confirm`
-- `GET /v1/exchange-operations/:operationId`
-- `POST /v1/orders/:orderId/refund/quote`
-- `POST /v1/orders/:orderId/refund/confirm`
-- `GET /v1/refund-operations/:operationId`
+- API client для работы с backend
+- auth/session state c `localStorage`
+- protected routing для авторизованных страниц
+- async data hooks для загрузки view models
+- форматтеры и status-mappers для UI
+
+Frontend работает только через backend API и не обращается к mock PSS напрямую.
 
 ## Verification
 
-Последняя проверка:
+Проверки после реализации:
 
-- `npm.cmd run prisma:generate` — успешно
 - `npm.cmd run build` — успешно
-- исправлен DI wiring для `MockLeonardoGateway` в `ExchangeModule` и `RefundModule`
-- подготовлены файлы smoke-check: `docs/backend-smoke-check.md` и `docs/backend-smoke-check.http`
+- `npm.cmd run test` — успешно
 
-## Local Check Commands
+Frontend тесты:
 
-```powershell
-docker compose up -d postgres
-cd C:\diploma\belavia-diploma-project\backend
-Copy-Item .env.example .env
-npm install
-npm.cmd run prisma:generate
-npx prisma migrate reset --force
-npm.cmd run prisma:seed
-npm.cmd run build
-npm.cmd run start:dev
-```
+- `src/lib/format.test.ts`
+- `src/lib/status.test.ts`
+
+## Current Status
+
+Что уже работает:
+
+- полный first-wave frontend для личного кабинета до уровня quote-flow
+- связка страниц с backend первой очереди
+- reusable UI system на React + Tailwind CSS
+
+Что ещё не завершено:
+
+- финальная UX-полировка confirm exchange/refund
+- расширение frontend test coverage
+- минимальные e2e для frontend-first сценариев

@@ -1,14 +1,99 @@
-import { PlaceholderPage } from './page-factory';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { useAuth } from '@/app/auth-context';
+import { AppShell } from '@/components/layout/app-shell';
+import { DocumentRow } from '@/components/domain/document-row';
+import { EmptyState } from '@/components/ui/empty-state';
+import { ErrorState } from '@/components/ui/error-state';
+import { PageHeader } from '@/components/ui/page-header';
+import { PrimaryButton } from '@/components/ui/primary-button';
+import { useAsyncData } from '@/hooks/use-async-data';
+import { api } from '@/lib/api';
+import { routes } from '@/lib/routes';
 
 export function DocumentsPage() {
+  const { accessToken } = useAuth();
+  const { orderId = '' } = useParams();
+  const [resendMessage, setResendMessage] = useState<string | null>(null);
+  const [isResending, setIsResending] = useState(false);
+  const orderQuery = useAsyncData(() => api.getOrder(accessToken ?? '', orderId), [accessToken, orderId]);
+  const documentsQuery = useAsyncData(() => api.getDocuments(accessToken ?? '', orderId), [accessToken, orderId]);
+
+  async function handleResend() {
+    setIsResending(true);
+    setResendMessage(null);
+
+    try {
+      const response = await api.resendDocuments(accessToken ?? '', orderId);
+      setResendMessage(`Документы повторно отправлены на ${response.deliveryEmail}`);
+      documentsQuery.reload();
+      orderQuery.reload();
+    } catch (requestError) {
+      setResendMessage(requestError instanceof Error ? requestError.message : 'Не удалось отправить документы');
+    } finally {
+      setIsResending(false);
+    }
+  }
+
+  if (orderQuery.isLoading || documentsQuery.isLoading) {
+    return (
+      <AppShell>
+        <section className="rounded-[28px] border border-white/70 bg-white p-8 text-base text-slate-500 shadow-card shadow-slate-900/5">
+          Загружаем документы...
+        </section>
+      </AppShell>
+    );
+  }
+
+  if (orderQuery.error || documentsQuery.error || !orderQuery.data) {
+    return (
+      <AppShell>
+        <ErrorState
+          description={orderQuery.error ?? documentsQuery.error ?? 'Не удалось загрузить документы'}
+          onRetry={() => {
+            orderQuery.reload();
+            documentsQuery.reload();
+          }}
+        />
+      </AppShell>
+    );
+  }
+
+  const documents = documentsQuery.data ?? [];
+
   return (
-    <PlaceholderPage
-      title="Documents"
-      subtitle="Скелет экрана документов с акцентом на понятное повторное отправление документов на email."
-      blocks={[
-        { title: 'Documents list', description: 'Список доступных документов по заказу с типом и статусом.' },
-        { title: 'Resend action', description: 'Secondary CTA для повторной отправки документов.' },
-      ]}
-    />
+    <AppShell>
+      <div className="space-y-6">
+        <PageHeader
+          actions={
+            <PrimaryButton isLoading={isResending} onClick={() => void handleResend()} type="button">
+              Повторно отправить документы
+            </PrimaryButton>
+          }
+          backHref={routes.order(orderId)}
+          backLabel="Назад к заказу"
+          eyebrow={`Документы · ${orderQuery.data.pnr}`}
+          subtitle="Список доступных документов и действие resend на email через backend API."
+          title="Документы по заказу"
+        />
+
+        {resendMessage ? (
+          <section className="rounded-[28px] border border-emerald-200 bg-emerald-50 p-5 text-base text-emerald-800 shadow-card shadow-slate-900/5">
+            {resendMessage}
+          </section>
+        ) : null}
+
+        {documents.length === 0 ? (
+          <EmptyState description="Для этого заказа backend пока не вернул документов." title="Документы отсутствуют" />
+        ) : (
+          <div className="space-y-4">
+            {documents.map((document) => (
+              <DocumentRow document={document} key={document.id} />
+            ))}
+          </div>
+        )}
+      </div>
+    </AppShell>
   );
 }

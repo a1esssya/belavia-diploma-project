@@ -2,16 +2,28 @@
 
 Web-прототип первой очереди модернизации post-booking self-service для авиакомпании «Белавиа».
 
-## Что уже подготовлено на этом этапе
+## Текущее состояние проекта
 
 - Монорепозиторная структура с папками `frontend` и `backend`.
 - Frontend: React.js SPA + React Router + Tailwind CSS.
 - Backend: NestJS с обязательными модулями первой очереди.
 - PostgreSQL в `docker-compose`.
-- Prisma schema и seed scaffolding.
+- Prisma schema, миграции и seed scaffolding.
 - Шаблоны env-файлов в формате `.env.example`.
+- Backend первой очереди уже реализован.
+- Backend smoke-check уже подготовлен и пройден.
+- Frontend first-wave ещё не реализован полностью.
 
-> На текущем шаге реализован именно скелет проекта. Полная бизнес-логика будет добавляться поэтапно.
+## Что уже реализовано
+
+- Этап 1 завершён: scaffold проекта, `docker-compose`, env-шаблоны, Prisma schema и seed scaffolding.
+- Этап 2 завершён: backend первой очереди с обязательными модулями, mock Leonardo gateway, public API, idempotency для confirm-операций и seed-данными.
+- Для backend подготовлены и задокументированы smoke-check артефакты: `docs/backend-smoke-check.md` и `docs/backend-smoke-check.http`.
+
+## Что ещё не завершено
+
+- Этап 3: frontend первой очереди.
+- Этап 4: полный набор unit/integration/frontend/e2e тестов для всего проекта.
 
 ## Структура проекта
 
@@ -57,8 +69,8 @@ docker compose up --build
 - Health-check: `http://localhost:3000/health`
 - PostgreSQL: `localhost:5432`
 
-`GET /health` исключён из global prefix и используется для локальной проверки scaffold.
-Остальные backend-маршруты остаются под префиксом ` /v1 `, например `http://localhost:3000/v1/auth/health`.
+`GET /health` исключён из global prefix и используется для локальной проверки backend.
+Остальные backend-маршруты остаются под префиксом `/v1`.
 
 ## Локальный запуск без Docker
 
@@ -81,7 +93,7 @@ npm install
 npm run dev
 ```
 
-## Prisma и seed scaffolding
+## Backend первой очереди
 
 ```bash
 cd backend
@@ -90,11 +102,26 @@ npm run prisma:migrate -- --name init
 npm run prisma:seed
 ```
 
-Seed создаёт демонстрационного пользователя и несколько заказов для будущей реализации сценариев первой очереди.
+На текущем этапе backend уже покрывает первую очередь:
+
+- email OTP авторизацию;
+- список заказов и карточку заказа;
+- документы и resend документов;
+- историю событий;
+- booking lookup;
+- exchange/refund quote и confirm;
+- обновление витрины заказа после операций;
+- idempotency для confirm exchange/refund.
+
+Сводка по последнему backend-шагу сохранена в `CODEX-LAST-SUMMARY.md`.
+
+## Frontend first-wave
+
+Frontend стек и базовая структура присутствуют, но первая очередь на frontend ещё не доведена до завершённого состояния. Следующий основной шаг проекта - реализация обязательных маршрутов, reusable UI-компонентов и связки с backend API по спецификации.
 
 ## Scope-ограничения
 
-В репозитории реализуется только первая очередь из `PROJECT_SPEC.md`:
+В репозитории реализуется только первая очередь из `PROJECT-SPEC.md`:
 
 - личный кабинет;
 - документы и история;

@@ -1,12 +1,12 @@
 @baseUrl = http://localhost:3000
 @apiUrl = {{baseUrl}}/v1
 @email = demo@belavia.by
-@loginSessionId = paste-login-session-id-here
-@otpCode = paste-otp-debug-code-here
-@accessToken = paste-access-token-here
-@orderId = paste-order-id-here
-@exchangeOperationId = paste-exchange-operation-id-here
-@refundOperationId = paste-refund-operation-id-here
+@loginSessionId = cmnq8etuc0005orc565wcs6ji
+@otpCode = 324048
+@accessToken = bb0934c3ed04dc2f51edc0df7aa7dcd87af6a7a1fa3c0427
+@orderId = cmnq7dvho000b7m5h8bf00b3p
+@exchangeOperationId = cmnq8nat8000forc5d9uth3fj
+@refundOperationId = cmnq8psb2000torc5kpr9jvid
 @idempotencyKey = smoke-check-key-001
 
 ### Health

@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RefundModule = void 0;
 const common_1 = require("@nestjs/common");
 const history_module_1 = require("../history/history.module");
+const integrations_module_1 = require("../integrations/integrations.module");
 const orders_module_1 = require("../orders/orders.module");
 const refund_controller_1 = require("./refund.controller");
 const refund_service_1 = require("./refund.service");
@@ -17,7 +18,7 @@ let RefundModule = class RefundModule {
 exports.RefundModule = RefundModule;
 exports.RefundModule = RefundModule = __decorate([
     (0, common_1.Module)({
-        imports: [orders_module_1.OrdersModule, history_module_1.HistoryModule],
+        imports: [orders_module_1.OrdersModule, history_module_1.HistoryModule, integrations_module_1.IntegrationsModule],
         controllers: [refund_controller_1.RefundController],
         providers: [refund_service_1.RefundService],
     })

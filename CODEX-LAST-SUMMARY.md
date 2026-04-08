@@ -68,6 +68,7 @@ Seed покрывает:
 - `npm.cmd run prisma:generate` — успешно
 - `npm.cmd run build` — успешно
 - исправлен DI wiring для `MockLeonardoGateway` в `ExchangeModule` и `RefundModule`
+- подготовлены файлы smoke-check: `docs/backend-smoke-check.md` и `docs/backend-smoke-check.http`
 
 ## Local Check Commands
 

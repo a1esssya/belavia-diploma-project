@@ -1,0 +1,125 @@
+@baseUrl = http://localhost:3000
+@apiUrl = {{baseUrl}}/v1
+@email = demo@belavia.by
+@loginSessionId = paste-login-session-id-here
+@otpCode = paste-otp-debug-code-here
+@accessToken = paste-access-token-here
+@orderId = paste-order-id-here
+@exchangeOperationId = paste-exchange-operation-id-here
+@refundOperationId = paste-refund-operation-id-here
+@idempotencyKey = smoke-check-key-001
+
+### Health
+GET {{baseUrl}}/health
+
+### Auth health
+GET {{apiUrl}}/auth/health
+
+### Booking health
+GET {{apiUrl}}/booking/health
+
+### Integrations health
+GET {{apiUrl}}/integrations/health
+
+### Login start
+POST {{apiUrl}}/auth/login/start
+Content-Type: application/json
+
+{
+  "email": "{{email}}"
+}
+
+### Login verify
+POST {{apiUrl}}/auth/login/verify
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "loginSessionId": "{{loginSessionId}}",
+  "otpCode": "{{otpCode}}"
+}
+
+### Me
+GET {{apiUrl}}/me
+Authorization: Bearer {{accessToken}}
+
+### Orders list
+GET {{apiUrl}}/orders
+Authorization: Bearer {{accessToken}}
+
+### Order card
+GET {{apiUrl}}/orders/{{orderId}}
+Authorization: Bearer {{accessToken}}
+
+### Order documents
+GET {{apiUrl}}/orders/{{orderId}}/documents
+Authorization: Bearer {{accessToken}}
+
+### Resend documents
+POST {{apiUrl}}/orders/{{orderId}}/documents/resend
+Authorization: Bearer {{accessToken}}
+
+### Order events
+GET {{apiUrl}}/orders/{{orderId}}/events
+Authorization: Bearer {{accessToken}}
+
+### Exchange quote
+POST {{apiUrl}}/orders/{{orderId}}/exchange/quote
+Authorization: Bearer {{accessToken}}
+
+### Exchange confirm
+POST {{apiUrl}}/orders/{{orderId}}/exchange/confirm
+Authorization: Bearer {{accessToken}}
+Idempotency-Key: {{idempotencyKey}}
+Content-Type: application/json
+
+{
+  "quoteId": "{{exchangeOperationId}}"
+}
+
+### Exchange operation
+GET {{apiUrl}}/exchange-operations/{{exchangeOperationId}}
+Authorization: Bearer {{accessToken}}
+
+### Refund quote
+POST {{apiUrl}}/orders/{{orderId}}/refund/quote
+Authorization: Bearer {{accessToken}}
+
+### Refund confirm
+POST {{apiUrl}}/orders/{{orderId}}/refund/confirm
+Authorization: Bearer {{accessToken}}
+Idempotency-Key: {{idempotencyKey}}-refund
+Content-Type: application/json
+
+{
+  "quoteId": "{{refundOperationId}}"
+}
+
+### Refund operation
+GET {{apiUrl}}/refund-operations/{{refundOperationId}}
+Authorization: Bearer {{accessToken}}
+
+### Booking lookup by PNR + surname
+POST {{apiUrl}}/booking/lookup
+Content-Type: application/json
+
+{
+  "pnr": "B2FLEX",
+  "passengerLastName": "IVANOV"
+}
+
+### Booking lookup by ticket + surname
+POST {{apiUrl}}/booking/lookup
+Content-Type: application/json
+
+{
+  "ticketNumber": "421000000102",
+  "passengerLastName": "PETROVA"
+}
+
+### Suggested order mapping from seed
+# B2FLEX  -> flexible exchange, refund available
+# B2PAY1  -> exchange with surcharge
+# B2NREF  -> refund blocked
+# B2CANC  -> cancelled order
+# B2FAIL  -> commit failure scenario

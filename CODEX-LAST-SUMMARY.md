@@ -1,57 +1,47 @@
-# Orders 500 Fix Summary
+# Trips Ordering and History Delta Summary
 
 ## Scope
 
-Выполнена системная delta-правка для устранения `Internal server error` на странице поездок после успешного входа.
+Выполнена точечная delta-правка поверх текущего состояния проекта.
 
-## Root Cause
+Обновлены:
 
-Причина была в рассинхроне между backend-кодом и реальной схемой PostgreSQL:
+- порядок отображения заказов в `trips`;
+- количество событий в краткой истории внутри карточки заказа.
 
-- модель `orders_showcase` была расширена полями `baggageSummary` и `ancillaries`;
-- Prisma schema и backend-код уже ожидали эти поля;
-- миграция `20260409093000_add_baggage_and_ancillaries` в локальную БД не была применена;
-- из-за этого `GET /v1/orders` падал на запросе к таблице и frontend показывал `Internal server error`.
+## Changes
 
-Это был не частный баг маршрута `/orders`, а системная проблема запуска backend после изменений схемы.
+### Trips
 
-## Fix
+- cancelled orders теперь системно отправляются в конец списка заказов;
+- логика применена на backend уровне для `GET /v1/orders`, а не только локально в UI;
+- внутри активных и cancelled фильтров существующее поведение не ломается, но в общем списке `Все поездки` отменённые больше не перемешиваются с активными.
 
-Исправлено:
+### Order Card History
 
-- в backend добавлен обязательный шаг `prisma migrate deploy` перед стартом сервера;
-- `start:dev` теперь выполняет:
-  - `prisma generate`
-  - `prisma migrate deploy`
-  - затем запуск NestJS;
-- `start` теперь тоже применяет миграции перед запуском;
-- pending migration `20260409093000_add_baggage_and_ancillaries` применена к локальной БД.
+- в карточке заказа теперь показываются только последние 3 события;
+- отдельная страница истории по-прежнему запрашивает и показывает полную историю без сокращения.
 
 ## Files Changed
 
-- `backend/package.json`
+- `backend/src/modules/orders/orders.service.ts`
 - `CODEX-LAST-SUMMARY.md`
 
 ## Verification
 
 Проверки после изменений:
 
-- в таблице `orders_showcase` теперь есть колонки:
-  - `baggageSummary`
-  - `ancillaries`
-- `POST /v1/auth/login/start` — успешно
-- `GET /v1/orders` с валидным access token — успешно, статус `200`
 - `backend`: `npm.cmd run build` — успешно
 
 ## Current Status
 
 Что уже работает:
 
-- login flow проходит;
-- после входа trips list больше не падает на `Internal server error`;
-- backend теперь системно доводит БД до нужной схемы перед запуском.
+- cancelled orders отображаются в конце очереди;
+- карточка заказа показывает только 3 последних события;
+- страница `/orders/:orderId/history` продолжает показывать всю историю.
 
 Что ещё не реализовано:
 
-- отдельные e2e-проверки login -> trips;
+- отдельные e2e-проверки именно для порядка заказов и краткой истории;
 - любые second-wave и third-wave сценарии по-прежнему вне scope.

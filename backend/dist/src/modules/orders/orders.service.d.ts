@@ -39,6 +39,7 @@ export declare class OrdersService {
     assertOrderAccess(userId: string, orderId: string): Promise<{
         documents: {
             id: string;
+            orderId: string;
             createdAt: Date;
             updatedAt: Date;
             type: import(".prisma/client").$Enums.DocumentType;
@@ -47,10 +48,10 @@ export declare class OrdersService {
             deliveryEmail: string;
             url: string;
             lastSentAt: Date | null;
-            orderId: string;
         }[];
     } & {
         id: string;
+        createdAt: Date;
         pnr: string;
         ticketNumber: string;
         passengerFirstName: string;
@@ -66,7 +67,6 @@ export declare class OrdersService {
         baggageSummary: Prisma.JsonValue | null;
         ancillaries: Prisma.JsonValue | null;
         pssScenario: import(".prisma/client").$Enums.PssScenario;
-        createdAt: Date;
         updatedAt: Date;
     }>;
     findForUser(userId: string): Promise<{

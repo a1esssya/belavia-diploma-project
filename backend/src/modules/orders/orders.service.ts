@@ -94,7 +94,18 @@ export class OrdersService {
       },
     });
 
-    return links.map(({ order }) => this.toListView(order));
+    return links
+      .map(({ order }) => this.toListView(order))
+      .sort((left, right) => {
+        const leftCancelled = left.status === 'CANCELLED';
+        const rightCancelled = right.status === 'CANCELLED';
+
+        if (leftCancelled !== rightCancelled) {
+          return leftCancelled ? 1 : -1;
+        }
+
+        return new Date(left.departureAt).getTime() - new Date(right.departureAt).getTime();
+      });
   }
 
   async findOneForUser(userId: string, orderId: string) {
@@ -102,7 +113,7 @@ export class OrdersService {
     const events = await this.prisma.orderEvent.findMany({
       where: { orderId },
       orderBy: { createdAt: 'desc' },
-      take: 5,
+      take: 3,
     });
 
     return {

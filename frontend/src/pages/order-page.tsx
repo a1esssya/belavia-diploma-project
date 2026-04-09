@@ -19,6 +19,13 @@ function formatBaggage(line: BaggageLine) {
   return `${line.pieces} место, ${line.weightKg} кг`;
 }
 
+function mergeCheckedBaggage(checked: BaggageLine, extraPurchased?: BaggageLine | null): BaggageLine {
+  return {
+    pieces: checked.pieces + (extraPurchased?.pieces ?? 0),
+    weightKg: checked.weightKg + (extraPurchased?.weightKg ?? 0),
+  };
+}
+
 function getAncillaryTone(type: AncillaryItem['type']) {
   switch (type) {
     case 'SEAT':
@@ -28,6 +35,15 @@ function getAncillaryTone(type: AncillaryItem['type']) {
     case 'EXTRA_BAGGAGE':
       return 'bg-emerald-50 text-emerald-700';
   }
+}
+
+function SummaryTile({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-[24px] bg-white/90 p-4 shadow-sm shadow-slate-900/5 ring-1 ring-white">
+      <div className="text-sm font-semibold text-slate-500">{label}</div>
+      <div className="mt-2 text-base font-semibold text-slate-950">{value}</div>
+    </div>
+  );
 }
 
 export function OrderPage() {
@@ -61,6 +77,11 @@ export function OrderPage() {
   const refundStatus = getOperationAvailabilityMeta('refund', data.status, data.refund);
   const timelineEvents = buildTimelineEvents(data.recentEvents, data.status);
   const isCancelled = isCancelledOrder(data.status);
+  const checkedBaggage = mergeCheckedBaggage(data.baggageSummary.checked, data.baggageSummary.extraPurchased);
+  const visibleAncillaries = data.ancillaries.filter((item) => item.type !== 'EXTRA_BAGGAGE');
+  const exchangeAvailable = !isCancelled && data.exchange.available;
+  const refundAvailable = !isCancelled && data.refund.available;
+  const bothUnavailable = !exchangeAvailable && !refundAvailable;
 
   return (
     <AppShell>
@@ -69,18 +90,16 @@ export function OrderPage() {
           backHref={routes.trips}
           backLabel="Назад к поездкам"
           eyebrow={`PNR ${data.pnr}`}
-          subtitle="Карточка заказа с ключевой информацией по маршруту, багажу, услугам, документам и доступным действиям по билету."
+          subtitle="Карточка заказа с маршрутом, багажом, дополнительными услугами, документами и историей изменений."
           title="Карточка заказа"
         />
 
         <section className="overflow-hidden rounded-[32px] border border-white/70 bg-white shadow-card shadow-slate-900/5">
           <div className="bg-[linear-gradient(135deg,#eef2ff_0%,#f8fafc_48%,#ffffff_100%)] p-6 md:p-8">
             <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
-              <div className="space-y-4">
+              <div className="max-w-2xl space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <StatusBadge tone={orderStatus.tone}>{orderStatus.label}</StatusBadge>
-                  <StatusBadge tone={exchangeStatus.tone}>{exchangeStatus.label}</StatusBadge>
-                  <StatusBadge tone={refundStatus.tone}>{refundStatus.label}</StatusBadge>
                 </div>
 
                 <div>
@@ -93,86 +112,31 @@ export function OrderPage() {
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2 xl:w-[520px]">
-                <div className="rounded-[24px] bg-white/90 p-4 shadow-sm shadow-slate-900/5 ring-1 ring-white">
-                  <div className="text-sm font-semibold text-slate-500">Дата и время</div>
-                  <div className="mt-2 text-base font-semibold text-slate-950">
-                    {formatDateRange(data.itinerary.departureAt, data.itinerary.arrivalAt)}
-                  </div>
-                </div>
-                <div className="rounded-[24px] bg-white/90 p-4 shadow-sm shadow-slate-900/5 ring-1 ring-white">
-                  <div className="text-sm font-semibold text-slate-500">Стоимость</div>
-                  <div className="mt-2 text-base font-semibold text-slate-950">
-                    {formatCurrency(data.amount, data.currency)}
-                  </div>
-                </div>
-                <div className="rounded-[24px] bg-white/90 p-4 shadow-sm shadow-slate-900/5 ring-1 ring-white">
-                  <div className="text-sm font-semibold text-slate-500">PNR</div>
-                  <div className="mt-2 text-base font-semibold text-slate-950">{data.pnr}</div>
-                </div>
-                <div className="rounded-[24px] bg-white/90 p-4 shadow-sm shadow-slate-900/5 ring-1 ring-white">
-                  <div className="text-sm font-semibold text-slate-500">Номер билета</div>
-                  <div className="mt-2 text-base font-semibold text-slate-950">{data.ticketNumber}</div>
-                </div>
+                <SummaryTile
+                  label="Дата и время"
+                  value={formatDateRange(data.itinerary.departureAt, data.itinerary.arrivalAt)}
+                />
+                <SummaryTile label="Стоимость" value={formatCurrency(data.amount, data.currency)} />
+                <SummaryTile label="PNR" value={data.pnr} />
+                <SummaryTile label="Номер билета" value={data.ticketNumber} />
               </div>
             </div>
           </div>
 
           <div className="grid gap-6 p-6 md:p-8 xl:grid-cols-[1.1fr_0.9fr]">
             <div className="space-y-6">
-              <section className="rounded-[28px] border border-slate-200 bg-slate-50/70 p-5">
+              <section className="rounded-[28px] border border-slate-200 bg-white p-5">
                 <h3 className="text-xl font-bold text-slate-950">Пассажир и статус заказа</h3>
                 <div className="mt-4 grid gap-4 md:grid-cols-2">
-                  <div className="rounded-3xl bg-white p-4">
+                  <div className="rounded-3xl bg-slate-50 p-4">
                     <div className="text-sm font-semibold text-slate-500">Пассажир</div>
                     <div className="mt-2 text-base font-semibold text-slate-950">{data.passenger.fullName}</div>
                   </div>
-                  <div className="rounded-3xl bg-white p-4">
+                  <div className="rounded-3xl bg-slate-50 p-4">
                     <div className="text-sm font-semibold text-slate-500">Статус заказа</div>
                     <div className="mt-2">
                       <StatusBadge tone={orderStatus.tone}>{orderStatus.label}</StatusBadge>
                     </div>
-                  </div>
-                </div>
-              </section>
-
-              <section className="rounded-[28px] border border-slate-200 bg-white p-5">
-                <div className="flex items-center justify-between gap-4">
-                  <h3 className="text-xl font-bold text-slate-950">Обмен и возврат</h3>
-                </div>
-                <div className="mt-4 grid gap-4 md:grid-cols-2">
-                  <div className="rounded-3xl bg-slate-50 p-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="text-base font-semibold text-slate-950">Обмен билета</div>
-                      <StatusBadge tone={exchangeStatus.tone}>{exchangeStatus.label}</StatusBadge>
-                    </div>
-                    <p className="mt-3 text-sm leading-6 text-slate-600">
-                      {exchangeStatus.reason ?? 'Для этого заказа можно запросить расчёт обмена и подтвердить изменение.'}
-                    </p>
-                    {!isCancelled ? (
-                      <Link
-                        className="mt-4 inline-flex min-h-11 items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-brand transition hover:border-brand/30 hover:bg-brand/5"
-                        to={routes.exchange(data.id)}
-                      >
-                        Перейти к обмену
-                      </Link>
-                    ) : null}
-                  </div>
-                  <div className="rounded-3xl bg-slate-50 p-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="text-base font-semibold text-slate-950">Возврат билета</div>
-                      <StatusBadge tone={refundStatus.tone}>{refundStatus.label}</StatusBadge>
-                    </div>
-                    <p className="mt-3 text-sm leading-6 text-slate-600">
-                      {refundStatus.reason ?? 'Для этого заказа можно запросить расчёт возврата и подтвердить операцию.'}
-                    </p>
-                    {!isCancelled ? (
-                      <Link
-                        className="mt-4 inline-flex min-h-11 items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-brand transition hover:border-brand/30 hover:bg-brand/5"
-                        to={routes.refund(data.id)}
-                      >
-                        Перейти к возврату
-                      </Link>
-                    ) : null}
                   </div>
                 </div>
               </section>
@@ -190,7 +154,7 @@ export function OrderPage() {
                   ) : null}
                 </div>
 
-                <div className="mt-4 grid gap-4 md:grid-cols-3">
+                <div className="mt-4 grid gap-4 md:grid-cols-2">
                   <div className="rounded-3xl bg-slate-50 p-4">
                     <div className="text-sm font-semibold text-slate-500">Ручная кладь</div>
                     <div className="mt-2 text-base font-semibold text-slate-950">
@@ -200,15 +164,7 @@ export function OrderPage() {
                   <div className="rounded-3xl bg-slate-50 p-4">
                     <div className="text-sm font-semibold text-slate-500">Багаж</div>
                     <div className="mt-2 text-base font-semibold text-slate-950">
-                      {formatBaggage(data.baggageSummary.checked)}
-                    </div>
-                  </div>
-                  <div className="rounded-3xl bg-slate-50 p-4">
-                    <div className="text-sm font-semibold text-slate-500">Дополнительно добавлено</div>
-                    <div className="mt-2 text-base font-semibold text-slate-950">
-                      {data.baggageSummary.extraPurchased
-                        ? formatBaggage(data.baggageSummary.extraPurchased)
-                        : 'Пока не добавлено'}
+                      {formatBaggage(checkedBaggage)}
                     </div>
                   </div>
                 </div>
@@ -228,8 +184,8 @@ export function OrderPage() {
                 </div>
 
                 <div className="mt-4 grid gap-3">
-                  {data.ancillaries.length > 0 ? (
-                    data.ancillaries.map((service) => (
+                  {visibleAncillaries.length > 0 ? (
+                    visibleAncillaries.map((service) => (
                       <div
                         className="flex flex-col gap-3 rounded-3xl border border-slate-200 bg-slate-50 p-4 md:flex-row md:items-center md:justify-between"
                         key={service.id}
@@ -241,11 +197,7 @@ export function OrderPage() {
                         <span
                           className={`inline-flex w-fit rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${getAncillaryTone(service.type)}`}
                         >
-                          {service.type === 'SEAT'
-                            ? 'Место'
-                            : service.type === 'MEAL'
-                              ? 'Питание'
-                              : 'Багаж'}
+                          {service.type === 'SEAT' ? 'Место' : 'Питание'}
                         </span>
                       </div>
                     ))
@@ -274,7 +226,32 @@ export function OrderPage() {
                   >
                     История изменений
                   </Link>
+                  {exchangeAvailable ? (
+                    <Link
+                      className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-base font-semibold text-brand transition hover:border-brand/30 hover:bg-brand/5"
+                      to={routes.exchange(data.id)}
+                    >
+                      Обмен билета
+                    </Link>
+                  ) : null}
+                  {refundAvailable ? (
+                    <Link
+                      className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-base font-semibold text-brand transition hover:border-brand/30 hover:bg-brand/5"
+                      to={routes.refund(data.id)}
+                    >
+                      Возврат билета
+                    </Link>
+                  ) : null}
                 </div>
+
+                {bothUnavailable ? (
+                  <p className="mt-4 text-sm leading-6 text-slate-500">Обмен и возврат недоступны</p>
+                ) : (
+                  <div className="mt-4 space-y-2 text-sm leading-6 text-slate-500">
+                    {!exchangeAvailable ? <p>Обмен недоступен</p> : null}
+                    {!refundAvailable ? <p>Возврат недоступен</p> : null}
+                  </div>
+                )}
               </section>
 
               <section className="rounded-[28px] border border-slate-200 bg-white p-5">

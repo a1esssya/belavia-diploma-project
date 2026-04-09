@@ -25,16 +25,58 @@ type RefundQuote = {
   expiresAt: Date;
 };
 
+type BaggageOption = {
+  id: string;
+  title: string;
+  pieces: number;
+  weightKg: number;
+};
+
+type ServiceOption = {
+  id: string;
+  type: 'SEAT' | 'MEAL';
+  title: string;
+  description: string;
+};
+
 @Injectable()
 export class MockLeonardoGateway {
   private readonly quoteTtlMinutes = 15;
+  private readonly baggageOptions: BaggageOption[] = [
+    {
+      id: 'bag-extra-23',
+      title: 'Дополнительный багаж',
+      pieces: 1,
+      weightKg: 23,
+    },
+    {
+      id: 'bag-extra-32',
+      title: 'Увеличенный багаж',
+      pieces: 1,
+      weightKg: 32,
+    },
+  ];
+  private readonly serviceOptions: ServiceOption[] = [
+    {
+      id: 'seat-window-12a',
+      type: 'SEAT',
+      title: 'Выбор места',
+      description: 'Место 12A, у окна',
+    },
+    {
+      id: 'meal-hot',
+      type: 'MEAL',
+      title: 'Дополнительное питание',
+      description: 'Горячее питание на борту',
+    },
+  ];
 
   getExchangeEligibility(order: OrderShowcase): Eligibility {
     switch (order.pssScenario) {
       case PssScenario.CANCELLED_TRIP:
-        return { available: false, reason: 'Заказ уже отменён' };
+        return { available: false, reason: 'Обмен недоступен, потому что заказ отменён.' };
       case PssScenario.PAST_TRIP:
-        return { available: false, reason: 'Обмен недоступен после вылета' };
+        return { available: false, reason: 'Обмен недоступен после вылета.' };
       case PssScenario.REFUND_BLOCKED:
       case PssScenario.FLEXIBLE:
       case PssScenario.QUOTE_EXPIRED:
@@ -48,11 +90,11 @@ export class MockLeonardoGateway {
   getRefundEligibility(order: OrderShowcase): Eligibility {
     switch (order.pssScenario) {
       case PssScenario.CANCELLED_TRIP:
-        return { available: false, reason: 'Заказ уже отменён' };
+        return { available: false, reason: 'Возврат недоступен, потому что заказ отменён.' };
       case PssScenario.PAST_TRIP:
-        return { available: false, reason: 'Возврат недоступен после вылета' };
+        return { available: false, reason: 'Возврат недоступен после вылета.' };
       case PssScenario.REFUND_BLOCKED:
-        return { available: false, reason: 'Тариф не допускает возврат' };
+        return { available: false, reason: 'Тариф не допускает возврат.' };
       case PssScenario.FLEXIBLE:
       case PssScenario.EXCHANGE_SURCHARGE:
       case PssScenario.QUOTE_EXPIRED:
@@ -142,5 +184,13 @@ export class MockLeonardoGateway {
       status: 'cancelled',
       confirmationDocumentUrl: `https://mock-leonardo.local/documents/${order.pnr}-refund-confirmation.pdf`,
     };
+  }
+
+  resolveBaggageOption(optionId: string) {
+    return this.baggageOptions.find((option) => option.id === optionId) ?? null;
+  }
+
+  resolveServiceOption(optionId: string) {
+    return this.serviceOptions.find((option) => option.id === optionId) ?? null;
   }
 }

@@ -12,13 +12,41 @@ const client_1 = require("@prisma/client");
 let MockLeonardoGateway = class MockLeonardoGateway {
     constructor() {
         this.quoteTtlMinutes = 15;
+        this.baggageOptions = [
+            {
+                id: 'bag-extra-23',
+                title: 'Дополнительный багаж',
+                pieces: 1,
+                weightKg: 23,
+            },
+            {
+                id: 'bag-extra-32',
+                title: 'Увеличенный багаж',
+                pieces: 1,
+                weightKg: 32,
+            },
+        ];
+        this.serviceOptions = [
+            {
+                id: 'seat-window-12a',
+                type: 'SEAT',
+                title: 'Выбор места',
+                description: 'Место 12A, у окна',
+            },
+            {
+                id: 'meal-hot',
+                type: 'MEAL',
+                title: 'Дополнительное питание',
+                description: 'Горячее питание на борту',
+            },
+        ];
     }
     getExchangeEligibility(order) {
         switch (order.pssScenario) {
             case client_1.PssScenario.CANCELLED_TRIP:
-                return { available: false, reason: 'Заказ уже отменён' };
+                return { available: false, reason: 'Обмен недоступен, потому что заказ отменён.' };
             case client_1.PssScenario.PAST_TRIP:
-                return { available: false, reason: 'Обмен недоступен после вылета' };
+                return { available: false, reason: 'Обмен недоступен после вылета.' };
             case client_1.PssScenario.REFUND_BLOCKED:
             case client_1.PssScenario.FLEXIBLE:
             case client_1.PssScenario.QUOTE_EXPIRED:
@@ -31,11 +59,11 @@ let MockLeonardoGateway = class MockLeonardoGateway {
     getRefundEligibility(order) {
         switch (order.pssScenario) {
             case client_1.PssScenario.CANCELLED_TRIP:
-                return { available: false, reason: 'Заказ уже отменён' };
+                return { available: false, reason: 'Возврат недоступен, потому что заказ отменён.' };
             case client_1.PssScenario.PAST_TRIP:
-                return { available: false, reason: 'Возврат недоступен после вылета' };
+                return { available: false, reason: 'Возврат недоступен после вылета.' };
             case client_1.PssScenario.REFUND_BLOCKED:
-                return { available: false, reason: 'Тариф не допускает возврат' };
+                return { available: false, reason: 'Тариф не допускает возврат.' };
             case client_1.PssScenario.FLEXIBLE:
             case client_1.PssScenario.EXCHANGE_SURCHARGE:
             case client_1.PssScenario.QUOTE_EXPIRED:
@@ -112,6 +140,14 @@ let MockLeonardoGateway = class MockLeonardoGateway {
             status: 'cancelled',
             confirmationDocumentUrl: `https://mock-leonardo.local/documents/${order.pnr}-refund-confirmation.pdf`,
         };
+    }
+    resolveBaggageOption(optionId) {
+        var _a;
+        return (_a = this.baggageOptions.find((option) => option.id === optionId)) !== null && _a !== void 0 ? _a : null;
+    }
+    resolveServiceOption(optionId) {
+        var _a;
+        return (_a = this.serviceOptions.find((option) => option.id === optionId)) !== null && _a !== void 0 ? _a : null;
     }
 };
 exports.MockLeonardoGateway = MockLeonardoGateway;

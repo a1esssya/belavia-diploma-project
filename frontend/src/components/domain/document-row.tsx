@@ -1,11 +1,15 @@
-import type { OrderDocument } from '@/lib/types';
+import { Link } from 'react-router-dom';
+
 import { formatDateTime, toSentenceCase } from '@/lib/format';
+import { routes } from '@/lib/routes';
+import type { OrderDocument } from '@/lib/types';
 
 type DocumentRowProps = {
+  orderId: string;
   document: OrderDocument;
 };
 
-export function DocumentRow({ document }: DocumentRowProps) {
+export function DocumentRow({ orderId, document }: DocumentRowProps) {
   return (
     <article className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-5 sm:flex-row sm:items-center sm:justify-between">
       <div className="space-y-1">
@@ -19,14 +23,12 @@ export function DocumentRow({ document }: DocumentRowProps) {
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <a
+        <Link
           className="inline-flex min-h-11 items-center justify-center rounded-2xl border border-slate-200 px-4 py-2 font-semibold text-brand transition hover:bg-brand/5"
-          href={document.url}
-          rel="noreferrer"
-          target="_blank"
+          to={routes.documentPreview(orderId, document.id)}
         >
           Открыть
-        </a>
+        </Link>
       </div>
     </article>
   );

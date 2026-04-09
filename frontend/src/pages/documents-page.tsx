@@ -11,6 +11,7 @@ import { PrimaryButton } from '@/components/ui/primary-button';
 import { useAsyncData } from '@/hooks/use-async-data';
 import { api } from '@/lib/api';
 import { routes } from '@/lib/routes';
+import { isCancelledOrder } from '@/lib/status';
 
 export function DocumentsPage() {
   const { accessToken } = useAuth();
@@ -61,22 +62,31 @@ export function DocumentsPage() {
   }
 
   const documents = documentsQuery.data ?? [];
+  const isCancelled = isCancelledOrder(orderQuery.data.status);
 
   return (
     <AppShell>
       <div className="space-y-6">
         <PageHeader
           actions={
-            <PrimaryButton isLoading={isResending} onClick={() => void handleResend()} type="button">
-              Повторно отправить документы
-            </PrimaryButton>
+            !isCancelled ? (
+              <PrimaryButton isLoading={isResending} onClick={() => void handleResend()} type="button">
+                Повторно отправить документы
+              </PrimaryButton>
+            ) : undefined
           }
           backHref={routes.order(orderId)}
           backLabel="Назад к заказу"
           eyebrow={`Документы · ${orderQuery.data.pnr}`}
-          subtitle="Список доступных документов и действие resend на email через backend API."
+          subtitle="Откройте нужный документ или отправьте документы повторно на e-mail, если заказ активен."
           title="Документы по заказу"
         />
+
+        {isCancelled ? (
+          <section className="rounded-[28px] border border-slate-200 bg-slate-50 p-5 text-base text-slate-700 shadow-card shadow-slate-900/5">
+            Для отменённого заказа повторная отправка документов недоступна.
+          </section>
+        ) : null}
 
         {resendMessage ? (
           <section className="rounded-[28px] border border-emerald-200 bg-emerald-50 p-5 text-base text-emerald-800 shadow-card shadow-slate-900/5">
@@ -85,11 +95,11 @@ export function DocumentsPage() {
         ) : null}
 
         {documents.length === 0 ? (
-          <EmptyState description="Для этого заказа backend пока не вернул документов." title="Документы отсутствуют" />
+          <EmptyState description="Для этого заказа пока нет документов." title="Документы отсутствуют" />
         ) : (
           <div className="space-y-4">
             {documents.map((document) => (
-              <DocumentRow document={document} key={document.id} />
+              <DocumentRow document={document} key={document.id} orderId={orderId} />
             ))}
           </div>
         )}

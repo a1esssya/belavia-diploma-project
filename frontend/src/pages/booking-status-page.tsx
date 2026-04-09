@@ -9,12 +9,11 @@ import { StatusBadge } from '@/components/ui/status-badge';
 import { TextInput } from '@/components/ui/text-input';
 import { api } from '@/lib/api';
 import { formatDateRange } from '@/lib/format';
-import { getEligibilityMeta, getOrderStatusMeta } from '@/lib/status';
+import { getOperationAvailabilityMeta, getOrderStatusMeta } from '@/lib/status';
 import type { BookingLookupResult } from '@/lib/types';
 
 export function BookingStatusPage() {
   const [pnr, setPnr] = useState('');
-  const [ticketNumber, setTicketNumber] = useState('');
   const [passengerLastName, setPassengerLastName] = useState('');
   const [result, setResult] = useState<BookingLookupResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -23,13 +22,13 @@ export function BookingStatusPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!passengerLastName.trim()) {
-      setError('Введите фамилию пассажира');
+    if (!pnr.trim()) {
+      setError('Введите номер бронирования');
       return;
     }
 
-    if (!pnr.trim() && !ticketNumber.trim()) {
-      setError('Укажите PNR или номер билета');
+    if (!passengerLastName.trim()) {
+      setError('Введите фамилию пассажира');
       return;
     }
 
@@ -38,8 +37,7 @@ export function BookingStatusPage() {
 
     try {
       const response = await api.lookupBooking({
-        pnr: pnr.trim() || undefined,
-        ticketNumber: ticketNumber.trim() || undefined,
+        pnr: pnr.trim().toUpperCase(),
         passengerLastName: passengerLastName.trim(),
       });
 
@@ -53,46 +51,39 @@ export function BookingStatusPage() {
   }
 
   const orderStatus = result ? getOrderStatusMeta(result.status) : null;
-  const exchangeStatus = result ? getEligibilityMeta(result.exchange) : null;
-  const refundStatus = result ? getEligibilityMeta(result.refund) : null;
+  const exchangeStatus = result
+    ? getOperationAvailabilityMeta('exchange', result.status, result.exchange)
+    : null;
+  const refundStatus = result ? getOperationAvailabilityMeta('refund', result.status, result.refund) : null;
 
   return (
     <AppShell>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="Booking lookup"
-          subtitle="Ограниченный просмотр бронирования по PNR или номеру билета и фамилии без входа в личный кабинет."
-          title="Проверить статус брони"
+          eyebrow="Проверка брони"
+          subtitle="Введите номер бронирования и фамилию пассажира латиницей, как в билете."
+          title="Проверить бронь без входа"
         />
 
         <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
           <section className="rounded-[28px] border border-white/70 bg-white p-6 shadow-card shadow-slate-900/5">
-            <h2 className="text-2xl font-bold text-slate-950">Форма поиска</h2>
-            <p className="mt-3 text-base leading-7 text-slate-600">
-              Достаточно заполнить фамилию и один из идентификаторов брони.
-            </p>
+            <h2 className="text-2xl font-bold text-slate-950">Данные бронирования</h2>
             <form className="mt-6 space-y-4" onSubmit={(event) => void handleSubmit(event)}>
               <TextInput
                 label="PNR"
                 onChange={(event) => setPnr(event.target.value.toUpperCase())}
-                placeholder="Например, 97BNT5"
+                placeholder="Например, B2FLEX"
                 value={pnr}
-              />
-              <TextInput
-                label="Номер билета"
-                onChange={(event) => setTicketNumber(event.target.value)}
-                placeholder="6281234567890"
-                value={ticketNumber}
               />
               <TextInput
                 error={error}
                 label="Фамилия пассажира"
                 onChange={(event) => setPassengerLastName(event.target.value)}
-                placeholder="Dubik"
+                placeholder="IVANOV"
                 value={passengerLastName}
               />
               <PrimaryButton fullWidth isLoading={isSubmitting} type="submit">
-                Найти бронирование
+                Проверить бронь
               </PrimaryButton>
             </form>
           </section>
@@ -103,8 +94,6 @@ export function BookingStatusPage() {
             <section className="rounded-[28px] border border-white/70 bg-white p-6 shadow-card shadow-slate-900/5">
               <div className="flex flex-wrap gap-2">
                 <StatusBadge tone={orderStatus.tone}>{orderStatus.label}</StatusBadge>
-                <StatusBadge tone={exchangeStatus.tone}>{exchangeStatus.label}</StatusBadge>
-                <StatusBadge tone={refundStatus.tone}>{refundStatus.label}</StatusBadge>
               </div>
               <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-950">{result.route}</h2>
               <p className="mt-2 text-base text-slate-500">{`PNR ${result.pnr} · Фамилия ${result.passengerLastName}`}</p>
@@ -117,24 +106,22 @@ export function BookingStatusPage() {
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-semibold text-slate-500">Доступность обмена</dt>
+                  <dt className="text-sm font-semibold text-slate-500">Статус заказа</dt>
+                  <dd className="mt-2 text-base font-semibold text-slate-950">{orderStatus.label}</dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-semibold text-slate-500">Обмен билета</dt>
                   <dd className="mt-2 text-base font-semibold text-slate-950">{exchangeStatus.label}</dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-semibold text-slate-500">Доступность возврата</dt>
+                  <dt className="text-sm font-semibold text-slate-500">Возврат билета</dt>
                   <dd className="mt-2 text-base font-semibold text-slate-950">{refundStatus.label}</dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-semibold text-slate-500">Ограничение</dt>
-                  <dd className="mt-2 text-base font-semibold text-slate-950">
-                    Только просмотр статуса без доступа к документам и истории.
-                  </dd>
                 </div>
               </dl>
             </section>
           ) : (
             <EmptyState
-              description="После поиска здесь появится ограниченная карточка бронирования с базовыми статусами и доступностью exchange/refund."
+              description="После проверки здесь появится ограниченная карточка брони с базовой информацией по заказу."
               title="Результат пока не загружен"
             />
           )}

@@ -2,7 +2,10 @@ import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 
 import { useAuth } from '@/app/auth-context';
 import { routes } from '@/lib/routes';
+import { AddBaggagePage } from '@/pages/add-baggage-page';
+import { AddServicesPage } from '@/pages/add-services-page';
 import { BookingStatusPage } from '@/pages/booking-status-page';
+import { DocumentPreviewPage } from '@/pages/document-preview-page';
 import { DocumentsPage } from '@/pages/documents-page';
 import { ExchangePage } from '@/pages/exchange-page';
 import { HistoryPage } from '@/pages/history-page';
@@ -17,7 +20,7 @@ function ProtectedRoute() {
   if (status === 'checking') {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-50 text-slate-500">
-        Загрузка профиля...
+        Загружаем профиль...
       </div>
     );
   }
@@ -43,7 +46,10 @@ export function AppRouter() {
       <Route element={<ProtectedRoute />}>
         <Route path={routes.trips} element={<TripsPage />} />
         <Route path={routes.order()} element={<OrderPage />} />
+        <Route path={routes.addBaggage()} element={<AddBaggagePage />} />
+        <Route path={routes.addServices()} element={<AddServicesPage />} />
         <Route path={routes.documents()} element={<DocumentsPage />} />
+        <Route path={routes.documentPreview()} element={<DocumentPreviewPage />} />
         <Route path={routes.history()} element={<HistoryPage />} />
         <Route path={routes.exchange()} element={<ExchangePage />} />
         <Route path={routes.refund()} element={<RefundPage />} />

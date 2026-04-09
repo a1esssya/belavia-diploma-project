@@ -13,6 +13,17 @@ exports.OrdersService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../common/prisma.service");
 const mock_leonardo_gateway_1 = require("../integrations/gateway/mock-leonardo.gateway");
+const defaultBaggageSummary = {
+    cabin: {
+        pieces: 1,
+        weightKg: 10,
+    },
+    checked: {
+        pieces: 0,
+        weightKg: 0,
+    },
+    extraPurchased: null,
+};
 let OrdersService = class OrdersService {
     constructor(prisma, mockLeonardoGateway) {
         this.prisma = prisma;
@@ -93,6 +104,84 @@ let OrdersService = class OrdersService {
             refund: this.mockLeonardoGateway.getRefundEligibility(order),
         };
     }
+    async addBaggage(userId, orderId, optionId) {
+        const order = await this.assertOrderAccess(userId, orderId);
+        if (order.status === 'CANCELLED') {
+            throw new common_1.BadRequestException('Для отменённого заказа нельзя добавить багаж');
+        }
+        const option = this.mockLeonardoGateway.resolveBaggageOption(optionId);
+        if (!option) {
+            throw new common_1.BadRequestException('Выберите доступный вариант багажа');
+        }
+        const baggageSummary = this.parseBaggageSummary(order.baggageSummary);
+        const ancillaries = this.parseAncillaries(order.ancillaries);
+        const nextAncillaries = [
+            ...ancillaries.filter((item) => item.type !== 'EXTRA_BAGGAGE'),
+            {
+                id: option.id,
+                type: 'EXTRA_BAGGAGE',
+                title: option.title,
+                description: `${option.pieces} место, ${option.weightKg} кг`,
+            },
+        ];
+        await this.prisma.orderShowcase.update({
+            where: { id: order.id },
+            data: {
+                baggageSummary: {
+                    ...baggageSummary,
+                    extraPurchased: {
+                        pieces: option.pieces,
+                        weightKg: option.weightKg,
+                    },
+                },
+                ancillaries: nextAncillaries,
+            },
+        });
+        await this.prisma.orderEvent.create({
+            data: {
+                orderId: order.id,
+                type: 'baggage.added',
+                message: `Добавлен багаж: ${option.pieces} место, ${option.weightKg} кг`,
+            },
+        });
+        return this.findOneForUser(userId, orderId);
+    }
+    async addAncillary(userId, orderId, optionId) {
+        const order = await this.assertOrderAccess(userId, orderId);
+        if (order.status === 'CANCELLED') {
+            throw new common_1.BadRequestException('Для отменённого заказа нельзя добавить услугу');
+        }
+        const option = this.mockLeonardoGateway.resolveServiceOption(optionId);
+        if (!option) {
+            throw new common_1.BadRequestException('Выберите доступную услугу');
+        }
+        const ancillaries = this.parseAncillaries(order.ancillaries);
+        const nextAncillaries = [
+            ...ancillaries.filter((item) => item.type !== option.type),
+            {
+                id: option.id,
+                type: option.type,
+                title: option.title,
+                description: option.description,
+            },
+        ];
+        await this.prisma.orderShowcase.update({
+            where: { id: order.id },
+            data: {
+                ancillaries: nextAncillaries,
+            },
+        });
+        await this.prisma.orderEvent.create({
+            data: {
+                orderId: order.id,
+                type: option.type === 'SEAT' ? 'ancillary.seat.added' : 'ancillary.meal.added',
+                message: option.type === 'SEAT'
+                    ? `Добавлена услуга выбора места: ${option.description}`
+                    : `Добавлено питание: ${option.description}`,
+            },
+        });
+        return this.findOneForUser(userId, orderId);
+    }
     toListView(order) {
         return {
             id: order.id,
@@ -133,6 +222,8 @@ let OrdersService = class OrdersService {
             currency: order.currency,
             exchange: this.mockLeonardoGateway.getExchangeEligibility(order),
             refund: this.mockLeonardoGateway.getRefundEligibility(order),
+            baggageSummary: this.parseBaggageSummary(order.baggageSummary),
+            ancillaries: this.parseAncillaries(order.ancillaries),
             documents: (_b = (_a = order.documents) === null || _a === void 0 ? void 0 : _a.map((document) => ({
                 id: document.id,
                 type: document.type,
@@ -143,6 +234,26 @@ let OrdersService = class OrdersService {
                 lastSentAt: document.lastSentAt,
             }))) !== null && _b !== void 0 ? _b : [],
         };
+    }
+    parseBaggageSummary(input) {
+        var _a, _b, _c;
+        if (!input || typeof input !== 'object' || Array.isArray(input)) {
+            return defaultBaggageSummary;
+        }
+        const value = input;
+        return {
+            cabin: (_a = value.cabin) !== null && _a !== void 0 ? _a : defaultBaggageSummary.cabin,
+            checked: (_b = value.checked) !== null && _b !== void 0 ? _b : defaultBaggageSummary.checked,
+            extraPurchased: (_c = value.extraPurchased) !== null && _c !== void 0 ? _c : null,
+        };
+    }
+    parseAncillaries(input) {
+        if (!Array.isArray(input)) {
+            return [];
+        }
+        return input.filter((item) => {
+            return typeof item === 'object' && item !== null && 'id' in item && 'type' in item && 'title' in item && 'description' in item;
+        });
     }
 };
 exports.OrdersService = OrdersService;

@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start:dev": "nest start --watch",
-    "start": "node dist/main.js",
+    "start:dev": "npm run prisma:generate && npm run prisma:migrate:deploy && nest start --watch",
+    "start": "npm run prisma:migrate:deploy && node dist/src/main.js",
     "build": "nest build",
     "test": "jest",
     "prisma:generate": "prisma generate",
+    "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "tsx prisma/seed.ts"
   },

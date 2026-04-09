@@ -8,6 +8,7 @@ import { ErrorState } from '@/components/ui/error-state';
 import { PageHeader } from '@/components/ui/page-header';
 import { useAsyncData } from '@/hooks/use-async-data';
 import { api } from '@/lib/api';
+import { buildTimelineEvents } from '@/lib/history';
 import { routes } from '@/lib/routes';
 
 export function HistoryPage() {
@@ -20,7 +21,7 @@ export function HistoryPage() {
     return (
       <AppShell>
         <section className="rounded-[28px] border border-white/70 bg-white p-8 text-base text-slate-500 shadow-card shadow-slate-900/5">
-          Загружаем историю событий...
+          Загружаем историю...
         </section>
       </AppShell>
     );
@@ -40,7 +41,7 @@ export function HistoryPage() {
     );
   }
 
-  const events = historyQuery.data ?? [];
+  const events = buildTimelineEvents(historyQuery.data ?? [], orderQuery.data.status);
 
   return (
     <AppShell>
@@ -49,8 +50,8 @@ export function HistoryPage() {
           backHref={routes.order(orderId)}
           backLabel="Назад к заказу"
           eyebrow={`История · ${orderQuery.data.pnr}`}
-          subtitle="Линейная история событий заказа с реальными данными backend и датами изменений."
-          title="История событий"
+          subtitle="Короткая история изменений по заказу без технических кодов и повторяющихся записей."
+          title="История изменений"
         />
 
         <section className="rounded-[28px] border border-white/70 bg-white p-6 shadow-card shadow-slate-900/5">

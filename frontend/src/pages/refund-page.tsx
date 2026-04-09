@@ -9,16 +9,19 @@ import { ErrorState } from '@/components/ui/error-state';
 import { PageHeader } from '@/components/ui/page-header';
 import { PrimaryButton } from '@/components/ui/primary-button';
 import { StatusBadge } from '@/components/ui/status-badge';
+import { SuccessState } from '@/components/ui/success-state';
 import { useAsyncData } from '@/hooks/use-async-data';
 import { api } from '@/lib/api';
 import { formatCurrency } from '@/lib/format';
 import { routes } from '@/lib/routes';
-import { getEligibilityMeta } from '@/lib/status';
+import { getOperationAvailabilityMeta, isCancelledOrder } from '@/lib/status';
 import type { BlockedOperationResponse, OperationView } from '@/lib/types';
 
-function isBlockedResponse(
-  value: OperationView | BlockedOperationResponse,
-): value is BlockedOperationResponse {
+function createIdempotencyKey() {
+  return `refund-${crypto.randomUUID()}`;
+}
+
+function isBlockedResponse(value: OperationView | BlockedOperationResponse): value is BlockedOperationResponse {
   return 'eligibility' in value;
 }
 
@@ -27,20 +30,42 @@ export function RefundPage() {
   const { orderId = '' } = useParams();
   const [quoteResult, setQuoteResult] = useState<OperationView | BlockedOperationResponse | null>(null);
   const [quoteError, setQuoteError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [isCreatingQuote, setIsCreatingQuote] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const orderQuery = useAsyncData(() => api.getOrder(accessToken ?? '', orderId), [accessToken, orderId]);
 
   async function handleCreateQuote() {
     setIsCreatingQuote(true);
     setQuoteError(null);
+    setSubmitError(null);
 
     try {
       const response = await api.createRefundQuote(accessToken ?? '', orderId);
       setQuoteResult(response);
     } catch (requestError) {
-      setQuoteError(requestError instanceof Error ? requestError.message : 'Не удалось получить refund quote');
+      setQuoteError(requestError instanceof Error ? requestError.message : 'Не удалось получить расчёт возврата');
     } finally {
       setIsCreatingQuote(false);
+    }
+  }
+
+  async function handleConfirmQuote(operation: OperationView) {
+    setSubmitError(null);
+    setIsSubmitting(true);
+
+    try {
+      const response = await api.confirmRefund(
+        accessToken ?? '',
+        orderId,
+        operation.id,
+        createIdempotencyKey(),
+      );
+      setQuoteResult(response);
+    } catch (requestError) {
+      setSubmitError(requestError instanceof Error ? requestError.message : 'Не удалось подтвердить возврат');
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -48,7 +73,7 @@ export function RefundPage() {
     return (
       <AppShell>
         <section className="rounded-[28px] border border-white/70 bg-white p-8 text-base text-slate-500 shadow-card shadow-slate-900/5">
-          Загружаем refund flow...
+          Загружаем данные по возврату...
         </section>
       </AppShell>
     );
@@ -62,7 +87,35 @@ export function RefundPage() {
     );
   }
 
-  const eligibility = getEligibilityMeta(orderQuery.data.refund);
+  const order = orderQuery.data;
+  const isCancelled = isCancelledOrder(order.status);
+  const availability = getOperationAvailabilityMeta('refund', order.status, order.refund);
+  const resolvedOperation =
+    quoteResult && !isBlockedResponse(quoteResult) ? quoteResult : null;
+
+  if (resolvedOperation?.status === 'SUCCEEDED') {
+    return (
+      <AppShell>
+        <div className="space-y-6">
+          <PageHeader
+            backHref={routes.order(orderId)}
+            backLabel="Назад к заказу"
+            eyebrow={`Возврат билета · ${order.pnr}`}
+            subtitle="Операция завершена. История изменений и карточка заказа уже обновлены."
+            title="Возврат билета"
+          />
+          <SuccessState
+            description="Возврат подтверждён. Заказ переведён в отменённый статус, а подтверждение сохранено в документах."
+            primaryHref={routes.order(orderId)}
+            primaryLabel="Вернуться в заказ"
+            secondaryHref={routes.trips}
+            secondaryLabel="К списку заказов"
+            title="Возврат подтверждён"
+          />
+        </div>
+      </AppShell>
+    );
+  }
 
   return (
     <AppShell>
@@ -70,40 +123,46 @@ export function RefundPage() {
         <PageHeader
           backHref={routes.order(orderId)}
           backLabel="Назад к заказу"
-          eyebrow={`Refund · ${orderQuery.data.pnr}`}
-          subtitle="Рабочий refund quote-flow первой очереди с прямой связкой с backend API и реальными статусами."
+          eyebrow={`Возврат билета · ${order.pnr}`}
+          subtitle="Сначала запросите расчёт, затем подтвердите возврат прямо на этой странице."
           title="Возврат билета"
         />
 
         <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
           <section className="rounded-[28px] border border-white/70 bg-white p-6 shadow-card shadow-slate-900/5">
             <div className="flex items-center justify-between gap-4">
-              <h2 className="text-2xl font-bold text-slate-950">Параметры операции</h2>
-              <StatusBadge tone={eligibility.tone}>{eligibility.label}</StatusBadge>
+              <h2 className="text-2xl font-bold text-slate-950">Шаг 1. Расчёт</h2>
+              <StatusBadge tone={availability.tone}>{availability.label}</StatusBadge>
             </div>
 
             <dl className="mt-6 grid gap-4 rounded-3xl bg-slate-50 p-5">
               <div>
                 <dt className="text-sm font-semibold text-slate-500">Маршрут</dt>
-                <dd className="mt-2 text-base font-semibold text-slate-950">{orderQuery.data.itinerary.route}</dd>
+                <dd className="mt-2 text-base font-semibold text-slate-950">{order.itinerary.route}</dd>
               </div>
               <div>
                 <dt className="text-sm font-semibold text-slate-500">Оплачено</dt>
                 <dd className="mt-2 text-base font-semibold text-slate-950">
-                  {formatCurrency(orderQuery.data.amount, orderQuery.data.currency)}
+                  {formatCurrency(order.amount, order.currency)}
                 </dd>
               </div>
               <div>
                 <dt className="text-sm font-semibold text-slate-500">Комментарий</dt>
                 <dd className="mt-2 text-base text-slate-700">
-                  Страница уже покрывает реальный quote-flow. Финальное UX-подтверждение confirm можно добавить следующим шагом.
+                  {availability.reason ?? 'Запросите расчёт, чтобы увидеть сумму возврата, комиссию и срок действия предложения.'}
                 </dd>
               </div>
             </dl>
 
             <div className="mt-6">
-              <PrimaryButton fullWidth isLoading={isCreatingQuote} onClick={() => void handleCreateQuote()} type="button">
-                Запросить refund quote
+              <PrimaryButton
+                disabled={isCancelled}
+                fullWidth
+                isLoading={isCreatingQuote}
+                onClick={() => void handleCreateQuote()}
+                type="button"
+              >
+                Рассчитать возврат
               </PrimaryButton>
             </div>
 
@@ -114,19 +173,36 @@ export function RefundPage() {
             ) : null}
           </section>
 
-          {quoteResult ? (
+          {isCancelled ? (
+            <ErrorState title="Возврат недоступен" description="Возврат недоступен, потому что заказ отменён." />
+          ) : quoteResult ? (
             isBlockedResponse(quoteResult) ? (
               <ErrorState
                 description={quoteResult.eligibility.reason ?? 'Возврат недоступен для этого заказа'}
-                title="Refund недоступен"
+                title="Возврат недоступен"
               />
             ) : (
-              <QuoteSummary mode="refund" operation={quoteResult} />
+              <div className="space-y-4">
+                <QuoteSummary mode="refund" operation={quoteResult} />
+                {submitError ? (
+                  <div className="rounded-3xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                    {submitError}
+                  </div>
+                ) : null}
+                <PrimaryButton
+                  fullWidth
+                  isLoading={isSubmitting}
+                  onClick={() => void handleConfirmQuote(quoteResult)}
+                  type="button"
+                >
+                  Подтвердить возврат
+                </PrimaryButton>
+              </div>
             )
           ) : (
             <EmptyState
-              description="После запроса backend вернёт реальный расчёт возврата или причину блокировки. Этот шаг уже полностью подключён к API."
-              title="Quote ещё не запрошен"
+              description="После расчёта здесь появится сводка по возврату с итоговой суммой, комиссией и сроком действия."
+              title="Расчёт ещё не запрошен"
             />
           )}
         </div>

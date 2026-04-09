@@ -37,12 +37,6 @@ export class RefundService {
         },
       });
 
-      await this.historyService.addEvent(
-        order.id,
-        'refund.blocked',
-        eligibility.reason ?? 'Возврат недоступен',
-      );
-
       return {
         operationId: blockedOperation.id,
         eligibility,
@@ -59,19 +53,9 @@ export class RefundService {
         refundFee: new Prisma.Decimal(quote.refundFee),
         status: quote.expiresAt <= new Date() ? OperationStatus.EXPIRED : OperationStatus.QUOTED,
         expiresAt: quote.expiresAt,
-        reason: quote.expiresAt <= new Date() ? 'Срок действия quote истёк' : null,
+        reason: quote.expiresAt <= new Date() ? 'Срок действия расчёта истёк' : null,
       },
     });
-
-    await this.historyService.addEvent(
-      order.id,
-      'refund.quote_created',
-      'Расчёт возврата подготовлен',
-      {
-        operationId: operation.id,
-        amount: quote.amount,
-      },
-    );
 
     return this.getOperationView(operation.id, userId);
   }
@@ -106,7 +90,7 @@ export class RefundService {
     });
 
     if (!operation) {
-      throw new NotFoundException('Refund quote не найден');
+      throw new NotFoundException('Расчёт возврата не найден');
     }
 
     if (operation.status === OperationStatus.BLOCKED) {
@@ -114,7 +98,7 @@ export class RefundService {
     }
 
     if (operation.status !== OperationStatus.QUOTED && operation.status !== OperationStatus.EXPIRED) {
-      throw new BadRequestException('Quote уже обработан');
+      throw new BadRequestException('Расчёт уже обработан');
     }
 
     await this.prisma.idempotencyKey.create({
@@ -130,7 +114,7 @@ export class RefundService {
         where: { id: operation.id },
         data: {
           status: OperationStatus.EXPIRED,
-          reason: 'Срок действия quote истёк',
+          reason: 'Срок действия расчёта истёк',
           idempotencyKey,
         },
       });
@@ -138,7 +122,7 @@ export class RefundService {
       await this.historyService.addEvent(
         order.id,
         'refund.expired',
-        'Подтверждение возврата отклонено: quote истёк',
+        'Подтверждение возврата отклонено: срок действия расчёта истёк',
       );
 
       await this.prisma.idempotencyKey.update({
@@ -193,7 +177,7 @@ export class RefundService {
       await this.historyService.addEvent(
         order.id,
         'refund.confirmed',
-        'Возврат успешно подтверждён',
+        'Возврат билета подтверждён',
         {
           operationId: completedOperation.id,
           amount: Number(completedOperation.quoteAmount),
@@ -235,7 +219,7 @@ export class RefundService {
     });
 
     if (!operation) {
-      throw new NotFoundException('Refund operation не найдена');
+      throw new NotFoundException('Операция возврата не найдена');
     }
 
     await this.ordersService.assertOrderAccess(userId, operation.orderId);

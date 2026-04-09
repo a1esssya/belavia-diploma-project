@@ -53,13 +53,13 @@ let AuthService = class AuthService {
             throw new common_1.NotFoundException('Сессия входа не найдена');
         }
         if (session.verifiedAt) {
-            throw new common_1.BadRequestException('OTP уже подтверждён');
+            throw new common_1.BadRequestException('Код подтверждения уже использован');
         }
         if (session.expiresAt <= new Date()) {
-            throw new common_1.UnauthorizedException('Срок действия OTP истёк');
+            throw new common_1.UnauthorizedException('Срок действия кода подтверждения истёк');
         }
         if (session.otpCode !== otpCode) {
-            throw new common_1.UnauthorizedException('Неверный OTP-код');
+            throw new common_1.UnauthorizedException('Неверный код подтверждения');
         }
         const accessToken = (0, node_crypto_1.randomBytes)(24).toString('hex');
         const accessExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);

@@ -16,11 +16,11 @@ export function QuoteSummary({ mode, operation }: QuoteSummaryProps) {
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="space-y-3">
           <div className="text-sm font-semibold uppercase tracking-[0.22em] text-brand/80">
-            {mode === 'exchange' ? 'Exchange quote' : 'Refund quote'}
+            {mode === 'exchange' ? 'Расчёт обмена' : 'Расчёт возврата'}
           </div>
-          <h2 className="text-2xl font-bold text-slate-950">Расчёт по бронированию {operation.pnr}</h2>
+          <h2 className="text-2xl font-bold text-slate-950">Сводка по бронированию {operation.pnr}</h2>
           <p className="text-base text-slate-600">
-            Quote получен напрямую из backend API. Здесь показывается реальный статус операции и итоговые суммы.
+            Проверьте итоговую сумму, комиссию и срок действия расчёта перед подтверждением.
           </p>
         </div>
         <StatusBadge tone={operationStatus.tone}>{operationStatus.label}</StatusBadge>
@@ -28,7 +28,9 @@ export function QuoteSummary({ mode, operation }: QuoteSummaryProps) {
 
       <dl className="mt-6 grid gap-4 rounded-3xl bg-slate-50 p-5 sm:grid-cols-2">
         <div>
-          <dt className="text-sm font-semibold text-slate-500">Итоговая сумма</dt>
+          <dt className="text-sm font-semibold text-slate-500">
+            {mode === 'exchange' ? 'Итоговая сумма' : 'Сумма возврата'}
+          </dt>
           <dd className="mt-2 text-2xl font-bold text-slate-950">
             {formatCurrency(operation.quote.amount, operation.quote.currency)}
           </dd>
@@ -48,9 +50,11 @@ export function QuoteSummary({ mode, operation }: QuoteSummaryProps) {
               </dd>
             </div>
             <div>
-              <dt className="text-sm font-semibold text-slate-500">Оплата</dt>
+              <dt className="text-sm font-semibold text-slate-500">Доплата</dt>
               <dd className="mt-2 text-lg font-semibold text-slate-900">
-                {(operation.quote.requiresPayment ?? false) ? 'Потребуется' : 'Не требуется'}
+                {operation.quote.requiresPayment
+                  ? formatCurrency(operation.quote.amount, operation.quote.currency)
+                  : 'Не требуется'}
               </dd>
             </div>
           </>
@@ -63,9 +67,9 @@ export function QuoteSummary({ mode, operation }: QuoteSummaryProps) {
           </div>
         )}
         <div>
-          <dt className="text-sm font-semibold text-slate-500">Действителен до</dt>
+          <dt className="text-sm font-semibold text-slate-500">Срок действия расчёта</dt>
           <dd className="mt-2 text-lg font-semibold text-slate-900">
-            {operation.quote.expiresAt ? formatDateTime(operation.quote.expiresAt) : 'Нет ограничения'}
+            {operation.quote.expiresAt ? formatDateTime(operation.quote.expiresAt) : 'Без ограничения'}
           </dd>
         </div>
       </dl>

@@ -20,8 +20,22 @@ type RefundQuote = {
     refundFee: number;
     expiresAt: Date;
 };
+type BaggageOption = {
+    id: string;
+    title: string;
+    pieces: number;
+    weightKg: number;
+};
+type ServiceOption = {
+    id: string;
+    type: 'SEAT' | 'MEAL';
+    title: string;
+    description: string;
+};
 export declare class MockLeonardoGateway {
     private readonly quoteTtlMinutes;
+    private readonly baggageOptions;
+    private readonly serviceOptions;
     getExchangeEligibility(order: OrderShowcase): Eligibility;
     getRefundEligibility(order: OrderShowcase): Eligibility;
     createExchangeQuote(order: OrderShowcase): ExchangeQuote;
@@ -35,5 +49,7 @@ export declare class MockLeonardoGateway {
         status: string;
         confirmationDocumentUrl: string;
     };
+    resolveBaggageOption(optionId: string): BaggageOption | null;
+    resolveServiceOption(optionId: string): ServiceOption | null;
 }
 export {};

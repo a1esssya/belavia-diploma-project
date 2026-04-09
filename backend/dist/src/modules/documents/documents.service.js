@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DocumentsService = void 0;
 const common_1 = require("@nestjs/common");
+const client_1 = require("@prisma/client");
 const prisma_service_1 = require("../../common/prisma.service");
 const history_service_1 = require("../history/history.service");
 const orders_service_1 = require("../orders/orders.service");
@@ -38,12 +39,15 @@ let DocumentsService = class DocumentsService {
     }
     async resendForUserOrder(userId, orderId) {
         const order = await this.ordersService.assertOrderAccess(userId, orderId);
+        if (order.status === client_1.OrderStatus.CANCELLED) {
+            throw new common_1.BadRequestException('Для отменённого заказа повторная отправка документов недоступна');
+        }
         const now = new Date();
         await this.prisma.orderDocument.updateMany({
             where: { orderId: order.id },
             data: { lastSentAt: now },
         });
-        await this.historyService.addEvent(order.id, 'documents.resent', 'Документы повторно отправлены на email', { deliveryEmail: 'demo@belavia.by' });
+        await this.historyService.addEvent(order.id, 'documents.resent', 'Документы повторно отправлены на e-mail', { deliveryEmail: 'demo@belavia.by' });
         const documents = await this.prisma.orderDocument.findMany({
             where: { orderId: order.id },
             orderBy: { createdAt: 'asc' },

@@ -39,12 +39,6 @@ export class ExchangeService {
         },
       });
 
-      await this.historyService.addEvent(
-        order.id,
-        'exchange.blocked',
-        eligibility.reason ?? 'Обмен недоступен',
-      );
-
       return {
         operationId: blockedOperation.id,
         eligibility,
@@ -63,20 +57,9 @@ export class ExchangeService {
         requiresPayment: quote.requiresPayment,
         status: quote.expiresAt <= new Date() ? OperationStatus.EXPIRED : OperationStatus.QUOTED,
         expiresAt: quote.expiresAt,
-        reason: quote.expiresAt <= new Date() ? 'Срок действия quote истёк' : null,
+        reason: quote.expiresAt <= new Date() ? 'Срок действия расчёта истёк' : null,
       },
     });
-
-    await this.historyService.addEvent(
-      order.id,
-      'exchange.quote_created',
-      'Расчёт обмена подготовлен',
-      {
-        operationId: operation.id,
-        amount: quote.amount,
-        requiresPayment: quote.requiresPayment,
-      },
-    );
 
     return this.getOperationView(operation.id, userId);
   }
@@ -111,7 +94,7 @@ export class ExchangeService {
     });
 
     if (!operation) {
-      throw new NotFoundException('Exchange quote не найден');
+      throw new NotFoundException('Расчёт обмена не найден');
     }
 
     if (operation.status === OperationStatus.BLOCKED) {
@@ -119,7 +102,7 @@ export class ExchangeService {
     }
 
     if (operation.status !== OperationStatus.QUOTED && operation.status !== OperationStatus.EXPIRED) {
-      throw new BadRequestException('Quote уже обработан');
+      throw new BadRequestException('Расчёт уже обработан');
     }
 
     await this.prisma.idempotencyKey.create({
@@ -135,7 +118,7 @@ export class ExchangeService {
         where: { id: operation.id },
         data: {
           status: OperationStatus.EXPIRED,
-          reason: 'Срок действия quote истёк',
+          reason: 'Срок действия расчёта истёк',
           idempotencyKey,
         },
       });
@@ -143,7 +126,7 @@ export class ExchangeService {
       await this.historyService.addEvent(
         order.id,
         'exchange.expired',
-        'Подтверждение обмена отклонено: quote истёк',
+        'Подтверждение обмена отклонено: срок действия расчёта истёк',
       );
 
       await this.prisma.idempotencyKey.update({
@@ -200,7 +183,7 @@ export class ExchangeService {
       await this.historyService.addEvent(
         order.id,
         'exchange.confirmed',
-        'Обмен успешно подтверждён',
+        'Обмен билета подтверждён',
         {
           operationId: completedOperation.id,
           amount: Number(completedOperation.quoteAmount),
@@ -242,7 +225,7 @@ export class ExchangeService {
     });
 
     if (!operation) {
-      throw new NotFoundException('Exchange operation не найдена');
+      throw new NotFoundException('Операция обмена не найдена');
     }
 
     await this.ordersService.assertOrderAccess(userId, operation.orderId);

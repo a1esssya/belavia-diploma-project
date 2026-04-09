@@ -24,7 +24,6 @@ let ExchangeService = class ExchangeService {
         this.mockLeonardoGateway = mockLeonardoGateway;
     }
     async createQuote(userId, orderId) {
-        var _a;
         const order = await this.ordersService.assertOrderAccess(userId, orderId);
         const eligibility = this.mockLeonardoGateway.getExchangeEligibility(order);
         if (!eligibility.available) {
@@ -41,7 +40,6 @@ let ExchangeService = class ExchangeService {
                     reason: eligibility.reason,
                 },
             });
-            await this.historyService.addEvent(order.id, 'exchange.blocked', (_a = eligibility.reason) !== null && _a !== void 0 ? _a : 'Обмен недоступен');
             return {
                 operationId: blockedOperation.id,
                 eligibility,
@@ -59,13 +57,8 @@ let ExchangeService = class ExchangeService {
                 requiresPayment: quote.requiresPayment,
                 status: quote.expiresAt <= new Date() ? client_1.OperationStatus.EXPIRED : client_1.OperationStatus.QUOTED,
                 expiresAt: quote.expiresAt,
-                reason: quote.expiresAt <= new Date() ? 'Срок действия quote истёк' : null,
+                reason: quote.expiresAt <= new Date() ? 'Срок действия расчёта истёк' : null,
             },
-        });
-        await this.historyService.addEvent(order.id, 'exchange.quote_created', 'Расчёт обмена подготовлен', {
-            operationId: operation.id,
-            amount: quote.amount,
-            requiresPayment: quote.requiresPayment,
         });
         return this.getOperationView(operation.id, userId);
     }
@@ -94,13 +87,13 @@ let ExchangeService = class ExchangeService {
             },
         });
         if (!operation) {
-            throw new common_1.NotFoundException('Exchange quote не найден');
+            throw new common_1.NotFoundException('Расчёт обмена не найден');
         }
         if (operation.status === client_1.OperationStatus.BLOCKED) {
             throw new common_1.BadRequestException((_a = operation.reason) !== null && _a !== void 0 ? _a : 'Обмен недоступен');
         }
         if (operation.status !== client_1.OperationStatus.QUOTED && operation.status !== client_1.OperationStatus.EXPIRED) {
-            throw new common_1.BadRequestException('Quote уже обработан');
+            throw new common_1.BadRequestException('Расчёт уже обработан');
         }
         await this.prisma.idempotencyKey.create({
             data: {
@@ -114,11 +107,11 @@ let ExchangeService = class ExchangeService {
                 where: { id: operation.id },
                 data: {
                     status: client_1.OperationStatus.EXPIRED,
-                    reason: 'Срок действия quote истёк',
+                    reason: 'Срок действия расчёта истёк',
                     idempotencyKey,
                 },
             });
-            await this.historyService.addEvent(order.id, 'exchange.expired', 'Подтверждение обмена отклонено: quote истёк');
+            await this.historyService.addEvent(order.id, 'exchange.expired', 'Подтверждение обмена отклонено: срок действия расчёта истёк');
             await this.prisma.idempotencyKey.update({
                 where: { key: idempotencyKey },
                 data: { responseRef: operation.id },
@@ -164,7 +157,7 @@ let ExchangeService = class ExchangeService {
                 });
                 return updatedOperation;
             });
-            await this.historyService.addEvent(order.id, 'exchange.confirmed', 'Обмен успешно подтверждён', {
+            await this.historyService.addEvent(order.id, 'exchange.confirmed', 'Обмен билета подтверждён', {
                 operationId: completedOperation.id,
                 amount: Number(completedOperation.quoteAmount),
             });
@@ -195,7 +188,7 @@ let ExchangeService = class ExchangeService {
             include: { order: true },
         });
         if (!operation) {
-            throw new common_1.NotFoundException('Exchange operation не найдена');
+            throw new common_1.NotFoundException('Операция обмена не найдена');
         }
         await this.ordersService.assertOrderAccess(userId, operation.orderId);
         return {

@@ -14,9 +14,22 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrdersController = void 0;
 const common_1 = require("@nestjs/common");
+const class_validator_1 = require("class-validator");
 const current_user_decorator_1 = require("../../common/auth/current-user.decorator");
 const session_auth_guard_1 = require("../../common/auth/session-auth.guard");
 const orders_service_1 = require("./orders.service");
+class AddBaggageDto {
+}
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], AddBaggageDto.prototype, "optionId", void 0);
+class AddAncillaryDto {
+}
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], AddAncillaryDto.prototype, "optionId", void 0);
 let OrdersController = class OrdersController {
     constructor(ordersService) {
         this.ordersService = ordersService;
@@ -26,6 +39,12 @@ let OrdersController = class OrdersController {
     }
     findOne(user, orderId) {
         return this.ordersService.findOneForUser(user.userId, orderId);
+    }
+    addBaggage(user, orderId, body) {
+        return this.ordersService.addBaggage(user.userId, orderId, body.optionId);
+    }
+    addAncillary(user, orderId, body) {
+        return this.ordersService.addAncillary(user.userId, orderId, body.optionId);
     }
 };
 exports.OrdersController = OrdersController;
@@ -44,6 +63,24 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", void 0)
 ], OrdersController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Post)(':orderId/baggage'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Param)('orderId')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, AddBaggageDto]),
+    __metadata("design:returntype", void 0)
+], OrdersController.prototype, "addBaggage", null);
+__decorate([
+    (0, common_1.Post)(':orderId/ancillaries'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Param)('orderId')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, AddAncillaryDto]),
+    __metadata("design:returntype", void 0)
+], OrdersController.prototype, "addAncillary", null);
 exports.OrdersController = OrdersController = __decorate([
     (0, common_1.Controller)('orders'),
     (0, common_1.UseGuards)(session_auth_guard_1.SessionAuthGuard),

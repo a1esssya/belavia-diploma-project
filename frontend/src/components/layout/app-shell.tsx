@@ -12,7 +12,6 @@ type AppShellProps = PropsWithChildren<{
 
 const navItems = [
   { to: routes.trips, label: 'Мои поездки', protectedOnly: true },
-  { to: routes.bookingStatus, label: 'Статус брони', protectedOnly: false },
 ];
 
 export function AppShell({ children, compact = false, headerSlot }: AppShellProps) {
@@ -30,7 +29,7 @@ export function AppShell({ children, compact = false, headerSlot }: AppShellProp
               </div>
               <div>
                 <div className="text-2xl font-bold tracking-tight text-brand">Belavia</div>
-                <div className="text-sm text-slate-500">Post-booking self-service</div>
+                <div className="text-sm text-slate-500">Личный кабинет пассажира</div>
               </div>
             </div>
 
@@ -44,7 +43,7 @@ export function AppShell({ children, compact = false, headerSlot }: AppShellProp
                         'rounded-full px-4 py-2 text-sm font-semibold transition',
                         isActive
                           ? 'bg-brand text-white shadow-md shadow-brand/20'
-                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200',
+                          : 'border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100',
                       ].join(' ')
                     }
                     key={item.to}

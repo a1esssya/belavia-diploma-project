@@ -1,9 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { getEligibilityMeta, getOperationStatusMeta, getOrderStatusMeta } from '@/lib/status';
+import {
+  getOperationAvailabilityMeta,
+  getOperationStatusMeta,
+  getOrderStatusMeta,
+} from '@/lib/status';
 
 describe('status helpers', () => {
-  it('maps order statuses to labels', () => {
+  it('maps order statuses to readable labels', () => {
     expect(getOrderStatusMeta('UPCOMING').label).toBe('Предстоящий');
   });
 
@@ -11,7 +15,20 @@ describe('status helpers', () => {
     expect(getOperationStatusMeta('BLOCKED').tone).toBe('danger');
   });
 
-  it('maps paid eligibility to warning label', () => {
-    expect(getEligibilityMeta({ available: true, requiresPayment: true }).label).toContain('доплатой');
+  it('shows surcharge for exchange availability', () => {
+    expect(
+      getOperationAvailabilityMeta('exchange', 'UPCOMING', {
+        available: true,
+        requiresPayment: true,
+      }).label,
+    ).toBe('Обмен с доплатой');
+  });
+
+  it('forces cancelled orders to unavailable state', () => {
+    expect(
+      getOperationAvailabilityMeta('refund', 'CANCELLED', {
+        available: true,
+      }).reason,
+    ).toBe('Возврат недоступен, потому что заказ отменён.');
   });
 });

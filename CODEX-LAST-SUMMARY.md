@@ -1,84 +1,57 @@
-# Frontend First-Wave Summary
+# Orders 500 Fix Summary
 
 ## Scope
 
-Реализован frontend первой очереди личного кабинета Belavia поверх уже готового backend API:
+Выполнена системная delta-правка для устранения `Internal server error` на странице поездок после успешного входа.
 
-- login по email OTP
-- список заказов
-- карточка заказа
-- документы и resend документов
-- история событий
-- booking lookup без авторизации
-- exchange quote-flow
-- refund quote-flow
+## Root Cause
 
-Подтверждение `confirm exchange/refund` не доводилось до финальной UI-полировки в рамках этого шага, как и было запрошено.
+Причина была в рассинхроне между backend-кодом и реальной схемой PostgreSQL:
 
-## Frontend Routes
+- модель `orders_showcase` была расширена полями `baggageSummary` и `ancillaries`;
+- Prisma schema и backend-код уже ожидали эти поля;
+- миграция `20260409093000_add_baggage_and_ancillaries` в локальную БД не была применена;
+- из-за этого `GET /v1/orders` падал на запросе к таблице и frontend показывал `Internal server error`.
 
-Готовые маршруты:
+Это был не частный баг маршрута `/orders`, а системная проблема запуска backend после изменений схемы.
 
-- `/login`
-- `/trips`
-- `/orders/:orderId`
-- `/orders/:orderId/documents`
-- `/orders/:orderId/history`
-- `/orders/:orderId/exchange`
-- `/orders/:orderId/refund`
-- `/booking-status`
+## Fix
 
-## UI Components
+Исправлено:
 
-Добавлены reusable React + Tailwind компоненты:
+- в backend добавлен обязательный шаг `prisma migrate deploy` перед стартом сервера;
+- `start:dev` теперь выполняет:
+  - `prisma generate`
+  - `prisma migrate deploy`
+  - затем запуск NestJS;
+- `start` теперь тоже применяет миграции перед запуском;
+- pending migration `20260409093000_add_baggage_and_ancillaries` применена к локальной БД.
 
-- `AppShell`
-- `PageHeader`
-- `PrimaryButton`
-- `SecondaryButton`
-- `TextInput`
-- `StatusBadge`
-- `OrderCard`
-- `DocumentRow`
-- `EventTimeline`
-- `QuoteSummary`
-- `EmptyState`
-- `ErrorState`
+## Files Changed
 
-## Frontend Architecture
-
-Добавлено:
-
-- API client для работы с backend
-- auth/session state c `localStorage`
-- protected routing для авторизованных страниц
-- async data hooks для загрузки view models
-- форматтеры и status-mappers для UI
-
-Frontend работает только через backend API и не обращается к mock PSS напрямую.
+- `backend/package.json`
+- `CODEX-LAST-SUMMARY.md`
 
 ## Verification
 
-Проверки после реализации:
+Проверки после изменений:
 
-- `npm.cmd run build` — успешно
-- `npm.cmd run test` — успешно
-
-Frontend тесты:
-
-- `src/lib/format.test.ts`
-- `src/lib/status.test.ts`
+- в таблице `orders_showcase` теперь есть колонки:
+  - `baggageSummary`
+  - `ancillaries`
+- `POST /v1/auth/login/start` — успешно
+- `GET /v1/orders` с валидным access token — успешно, статус `200`
+- `backend`: `npm.cmd run build` — успешно
 
 ## Current Status
 
 Что уже работает:
 
-- полный first-wave frontend для личного кабинета до уровня quote-flow
-- связка страниц с backend первой очереди
-- reusable UI system на React + Tailwind CSS
+- login flow проходит;
+- после входа trips list больше не падает на `Internal server error`;
+- backend теперь системно доводит БД до нужной схемы перед запуском.
 
-Что ещё не завершено:
+Что ещё не реализовано:
 
-- финальная UX-полировка confirm exchange/refund
-- расширение frontend test coverage
-- минимальные e2e для frontend-first сценариев
+- отдельные e2e-проверки login -> trips;
+- любые second-wave и third-wave сценарии по-прежнему вне scope.

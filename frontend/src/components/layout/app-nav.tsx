@@ -3,14 +3,13 @@ import { Link } from 'react-router-dom';
 import { routes } from '@/lib/routes';
 
 const links = [
-  { to: routes.login, label: 'Login' },
-  { to: routes.trips, label: 'Trips' },
-  { to: routes.order('demo-order'), label: 'Order Card' },
-  { to: routes.documents('demo-order'), label: 'Documents' },
-  { to: routes.history('demo-order'), label: 'History' },
-  { to: routes.exchange('demo-order'), label: 'Exchange' },
-  { to: routes.refund('demo-order'), label: 'Refund' },
-  { to: routes.bookingStatus, label: 'Booking lookup' },
+  { to: routes.login, label: 'Вход' },
+  { to: routes.trips, label: 'Поездки' },
+  { to: routes.order('demo-order'), label: 'Заказ' },
+  { to: routes.documents('demo-order'), label: 'Документы' },
+  { to: routes.history('demo-order'), label: 'История' },
+  { to: routes.exchange('demo-order'), label: 'Обмен' },
+  { to: routes.refund('demo-order'), label: 'Возврат' },
 ];
 
 export function AppNav() {

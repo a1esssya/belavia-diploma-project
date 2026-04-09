@@ -24,7 +24,6 @@ let RefundService = class RefundService {
         this.mockLeonardoGateway = mockLeonardoGateway;
     }
     async createQuote(userId, orderId) {
-        var _a;
         const order = await this.ordersService.assertOrderAccess(userId, orderId);
         const eligibility = this.mockLeonardoGateway.getRefundEligibility(order);
         if (!eligibility.available) {
@@ -39,7 +38,6 @@ let RefundService = class RefundService {
                     reason: eligibility.reason,
                 },
             });
-            await this.historyService.addEvent(order.id, 'refund.blocked', (_a = eligibility.reason) !== null && _a !== void 0 ? _a : 'Возврат недоступен');
             return {
                 operationId: blockedOperation.id,
                 eligibility,
@@ -55,12 +53,8 @@ let RefundService = class RefundService {
                 refundFee: new client_1.Prisma.Decimal(quote.refundFee),
                 status: quote.expiresAt <= new Date() ? client_1.OperationStatus.EXPIRED : client_1.OperationStatus.QUOTED,
                 expiresAt: quote.expiresAt,
-                reason: quote.expiresAt <= new Date() ? 'Срок действия quote истёк' : null,
+                reason: quote.expiresAt <= new Date() ? 'Срок действия расчёта истёк' : null,
             },
-        });
-        await this.historyService.addEvent(order.id, 'refund.quote_created', 'Расчёт возврата подготовлен', {
-            operationId: operation.id,
-            amount: quote.amount,
         });
         return this.getOperationView(operation.id, userId);
     }
@@ -89,13 +83,13 @@ let RefundService = class RefundService {
             },
         });
         if (!operation) {
-            throw new common_1.NotFoundException('Refund quote не найден');
+            throw new common_1.NotFoundException('Расчёт возврата не найден');
         }
         if (operation.status === client_1.OperationStatus.BLOCKED) {
             throw new common_1.BadRequestException((_a = operation.reason) !== null && _a !== void 0 ? _a : 'Возврат недоступен');
         }
         if (operation.status !== client_1.OperationStatus.QUOTED && operation.status !== client_1.OperationStatus.EXPIRED) {
-            throw new common_1.BadRequestException('Quote уже обработан');
+            throw new common_1.BadRequestException('Расчёт уже обработан');
         }
         await this.prisma.idempotencyKey.create({
             data: {
@@ -109,11 +103,11 @@ let RefundService = class RefundService {
                 where: { id: operation.id },
                 data: {
                     status: client_1.OperationStatus.EXPIRED,
-                    reason: 'Срок действия quote истёк',
+                    reason: 'Срок действия расчёта истёк',
                     idempotencyKey,
                 },
             });
-            await this.historyService.addEvent(order.id, 'refund.expired', 'Подтверждение возврата отклонено: quote истёк');
+            await this.historyService.addEvent(order.id, 'refund.expired', 'Подтверждение возврата отклонено: срок действия расчёта истёк');
             await this.prisma.idempotencyKey.update({
                 where: { key: idempotencyKey },
                 data: { responseRef: operation.id },
@@ -156,7 +150,7 @@ let RefundService = class RefundService {
                 });
                 return updatedOperation;
             });
-            await this.historyService.addEvent(order.id, 'refund.confirmed', 'Возврат успешно подтверждён', {
+            await this.historyService.addEvent(order.id, 'refund.confirmed', 'Возврат билета подтверждён', {
                 operationId: completedOperation.id,
                 amount: Number(completedOperation.quoteAmount),
             });
@@ -187,7 +181,7 @@ let RefundService = class RefundService {
             include: { order: true },
         });
         if (!operation) {
-            throw new common_1.NotFoundException('Refund operation не найдена');
+            throw new common_1.NotFoundException('Операция возврата не найдена');
         }
         await this.ordersService.assertOrderAccess(userId, operation.orderId);
         return {

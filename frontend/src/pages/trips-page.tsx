@@ -15,7 +15,7 @@ type TripsFilter = 'ALL' | OrderStatus;
 const tabs: Array<{ key: TripsFilter; label: string }> = [
   { key: 'ALL', label: 'Все поездки' },
   { key: 'UPCOMING', label: 'Предстоящие' },
-  { key: 'PAST', label: 'Прошедшие' },
+  { key: 'PAST', label: 'Завершённые' },
   { key: 'CANCELLED', label: 'Отменённые' },
 ];
 
@@ -37,14 +37,7 @@ export function TripsPage() {
       const matchesFilter = activeFilter === 'ALL' ? true : order.status === activeFilter;
       const matchesSearch =
         !search ||
-        [
-          order.route,
-          order.origin,
-          order.destination,
-          order.pnr,
-          order.passenger,
-          order.ticketNumber,
-        ]
+        [order.route, order.origin, order.destination, order.pnr, order.passenger, order.ticketNumber]
           .join(' ')
           .toLowerCase()
           .includes(search);
@@ -58,7 +51,7 @@ export function TripsPage() {
       <div className="space-y-6">
         <PageHeader
           eyebrow="Мои поездки"
-          subtitle="Предстоящие, завершённые и отменённые бронирования с прямым переходом к документам и карточке заказа."
+          subtitle="Предстоящие, завершённые и отменённые заказы. Внутри карточки заказа доступны детали по обмену, возврату, багажу и услугам."
           title="Список заказов"
         />
 
@@ -71,7 +64,7 @@ export function TripsPage() {
                     'rounded-2xl px-4 py-3 text-sm font-semibold transition',
                     activeFilter === tab.key
                       ? 'bg-brand text-white shadow-md shadow-brand/20'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200',
+                      : 'border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100',
                   ].join(' ')}
                   key={tab.key}
                   onClick={() => setActiveFilter(tab.key)}
@@ -99,7 +92,7 @@ export function TripsPage() {
           <ErrorState description={error} onRetry={reload} />
         ) : filteredOrders.length === 0 ? (
           <EmptyState
-            description="Для текущего фильтра ничего не найдено. Попробуйте другой статус или используйте demo-пользователя `demo@belavia.by`."
+            description="Для выбранного фильтра ничего не найдено. Попробуйте изменить статус или поисковый запрос."
             title="Заказы не найдены"
           />
         ) : (

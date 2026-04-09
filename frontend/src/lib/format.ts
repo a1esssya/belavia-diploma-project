@@ -45,18 +45,18 @@ export function formatRelativeDeparture(date: string | Date) {
   const diffDays = Math.ceil(diffMs / (24 * 60 * 60 * 1000));
 
   if (diffDays < 0) {
-    return 'поездка завершена';
+    return 'Поездка завершена';
   }
 
   if (diffDays === 0) {
-    return 'вылет сегодня';
+    return 'Вылет сегодня';
   }
 
   if (diffDays === 1) {
-    return 'через 1 день';
+    return 'Через 1 день';
   }
 
-  return `через ${diffDays} дн.`;
+  return `Через ${diffDays} дн.`;
 }
 
 export function toSentenceCase(value: string) {

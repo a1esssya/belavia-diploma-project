@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 import { useAuth } from '@/app/auth-context';
 import { AppShell } from '@/components/layout/app-shell';
@@ -12,11 +12,11 @@ import type { LoginStartResponse } from '@/lib/types';
 
 function validateEmail(email: string) {
   if (!email.trim()) {
-    return 'Введите email';
+    return 'Введите e-mail';
   }
 
   if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
-    return 'Введите корректный email';
+    return 'Введите корректный e-mail';
   }
 
   return null;
@@ -25,10 +25,10 @@ function validateEmail(email: string) {
 export function LoginPage() {
   const { signIn, status } = useAuth();
   const [email, setEmail] = useState('demo@belavia.by');
-  const [otpCode, setOtpCode] = useState('');
+  const [code, setCode] = useState('');
   const [loginStart, setLoginStart] = useState<LoginStartResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [step, setStep] = useState<'email' | 'otp'>('email');
+  const [step, setStep] = useState<'email' | 'code'>('email');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (status === 'authenticated') {
@@ -52,25 +52,25 @@ export function LoginPage() {
     try {
       const response = await api.startLogin(email.trim());
       setLoginStart(response);
-      setOtpCode(response.otpDebugCode ?? '');
-      setStep('otp');
+      setCode('');
+      setStep('code');
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : 'Не удалось начать вход');
+      setError(requestError instanceof Error ? requestError.message : 'Не удалось отправить код подтверждения');
     } finally {
       setIsSubmitting(false);
     }
   }
 
-  async function handleOtpSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleCodeSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!loginStart) {
-      setError('Сначала запросите OTP');
+      setError('Сначала введите e-mail');
       return;
     }
 
-    if (otpCode.trim().length !== 6) {
-      setError('Введите 6-значный OTP-код');
+    if (code.trim().length !== 6) {
+      setError('Введите 6-значный код подтверждения');
       return;
     }
 
@@ -78,56 +78,62 @@ export function LoginPage() {
     setIsSubmitting(true);
 
     try {
-      const response = await api.verifyLogin(loginStart.email, loginStart.loginSessionId, otpCode.trim());
+      const response = await api.verifyLogin(loginStart.email, loginStart.loginSessionId, code.trim());
       signIn({
         accessToken: response.accessToken,
         expiresAt: response.expiresAt,
         user: response.user,
       });
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : 'Не удалось подтвердить OTP');
+      setError(requestError instanceof Error ? requestError.message : 'Не удалось подтвердить вход');
     } finally {
       setIsSubmitting(false);
     }
   }
 
+  const debugCode =
+    import.meta.env.DEV && loginStart?.otpDebugCode ? loginStart.otpDebugCode : undefined;
+
   return (
     <AppShell compact>
       <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
         <section className="rounded-[32px] border border-white/70 bg-white/85 p-8 shadow-card shadow-slate-900/5 backdrop-blur sm:p-10">
-          <div className="text-sm font-semibold uppercase tracking-[0.24em] text-brand/80">Belavia account</div>
+          <div className="text-sm font-semibold uppercase tracking-[0.24em] text-brand/80">Belavia</div>
           <h1 className="mt-4 text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">
-            Личный кабинет Belavia
+            Личный кабинет пассажира
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
-            Заказы, документы, история событий и post-booking операции в одном цифровом контуре.
+            Управляйте поездками после бронирования: проверяйте статус заказа, открывайте документы,
+            смотрите историю изменений и оформляйте обмен или возврат билета.
           </p>
 
           <ul className="mt-8 space-y-4 text-base text-slate-700">
             <li className="flex items-start gap-3">
-              <span className="mt-2 h-2.5 w-2.5 rounded-full bg-red-500" />
-              Прозрачные статусы по заказу и доступности обмена или возврата.
+              <span className="mt-2 h-2.5 w-2.5 rounded-full bg-brand" />
+              В одном месте собраны все заказы, документы и история изменений.
             </li>
             <li className="flex items-start gap-3">
-              <span className="mt-2 h-2.5 w-2.5 rounded-full bg-red-500" />
-              Быстрый доступ к документам и повторной отправке на email.
+              <span className="mt-2 h-2.5 w-2.5 rounded-full bg-brand" />
+              Доступность обмена и возврата показывается отдельно для каждого заказа.
             </li>
             <li className="flex items-start gap-3">
-              <span className="mt-2 h-2.5 w-2.5 rounded-full bg-red-500" />
-              Отдельный booking lookup без авторизации для ограниченного просмотра.
+              <span className="mt-2 h-2.5 w-2.5 rounded-full bg-brand" />
+              Если вход не нужен, можно проверить бронь по номеру бронирования и фамилии пассажира.
             </li>
           </ul>
         </section>
 
         <section className="rounded-[32px] border border-white/70 bg-white p-8 shadow-card shadow-slate-900/5 sm:p-10">
           <div className="text-sm font-semibold uppercase tracking-[0.24em] text-brand/80">
-            {step === 'email' ? 'Вход по email OTP' : 'Подтверждение OTP'}
+            {step === 'email' ? 'Шаг 1' : 'Шаг 2'}
           </div>
           <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-950">
-            {step === 'email' ? 'Запросить код входа' : 'Подтвердить вход'}
+            {step === 'email' ? 'Вход в личный кабинет' : 'Подтвердите вход'}
           </h2>
           <p className="mt-3 text-base leading-7 text-slate-600">
-            Для проверки first-wave используйте `demo@belavia.by`. Backend в dev-режиме возвращает `otpDebugCode`.
+            {step === 'email'
+              ? 'Введите e-mail, указанный при бронировании. Мы отправим код подтверждения.'
+              : 'Введите код из письма.'}
           </p>
 
           {step === 'email' ? (
@@ -135,7 +141,7 @@ export function LoginPage() {
               <TextInput
                 autoComplete="email"
                 error={error ?? emailError}
-                label="Электронная почта"
+                label="E-mail"
                 name="email"
                 onChange={(event) => setEmail(event.target.value)}
                 placeholder="demo@belavia.by"
@@ -143,33 +149,35 @@ export function LoginPage() {
                 value={email}
               />
               <PrimaryButton fullWidth isLoading={isSubmitting} type="submit">
-                Получить OTP
+                Отправить код
               </PrimaryButton>
+              <Link
+                className="inline-flex text-sm font-semibold text-brand transition hover:text-brand/80"
+                to={routes.bookingStatus}
+              >
+                Проверить бронь без входа
+              </Link>
             </form>
           ) : (
-            <form className="mt-8 space-y-5" onSubmit={(event) => void handleOtpSubmit(event)}>
-              <TextInput
-                disabled
-                label="Email"
-                name="otp-email"
-                type="email"
-                value={loginStart?.email ?? email}
-              />
+            <form className="mt-8 space-y-5" onSubmit={(event) => void handleCodeSubmit(event)}>
+              <TextInput disabled label="E-mail" name="login-email" type="email" value={loginStart?.email ?? email} />
               <TextInput
                 error={error}
-                hint={
-                  loginStart?.otpDebugCode
-                    ? `Debug OTP from backend: ${loginStart.otpDebugCode}`
-                    : 'Введите код из email-мока backend'
-                }
+                hint="Код состоит из 6 цифр."
                 inputMode="numeric"
-                label="OTP-код"
+                label="Код подтверждения"
                 maxLength={6}
-                name="otp"
-                onChange={(event) => setOtpCode(event.target.value)}
+                name="code"
+                onChange={(event) => setCode(event.target.value)}
                 placeholder="123456"
-                value={otpCode}
+                value={code}
               />
+              {debugCode ? (
+                <details className="rounded-3xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+                  <summary className="cursor-pointer font-semibold text-slate-700">Для разработчика</summary>
+                  <div className="mt-3">Тестовый код: {debugCode}</div>
+                </details>
+              ) : null}
               <div className="flex flex-col gap-3 sm:flex-row">
                 <PrimaryButton fullWidth isLoading={isSubmitting} type="submit">
                   Войти
@@ -179,11 +187,11 @@ export function LoginPage() {
                   onClick={() => {
                     setStep('email');
                     setError(null);
-                    setOtpCode('');
+                    setCode('');
                   }}
                   type="button"
                 >
-                  Изменить email
+                  Изменить e-mail
                 </SecondaryButton>
               </div>
             </form>

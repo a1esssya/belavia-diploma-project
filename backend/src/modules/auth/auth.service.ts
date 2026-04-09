@@ -54,15 +54,15 @@ export class AuthService {
     }
 
     if (session.verifiedAt) {
-      throw new BadRequestException('OTP уже подтверждён');
+      throw new BadRequestException('Код подтверждения уже использован');
     }
 
     if (session.expiresAt <= new Date()) {
-      throw new UnauthorizedException('Срок действия OTP истёк');
+      throw new UnauthorizedException('Срок действия кода подтверждения истёк');
     }
 
     if (session.otpCode !== otpCode) {
-      throw new UnauthorizedException('Неверный OTP-код');
+      throw new UnauthorizedException('Неверный код подтверждения');
     }
 
     const accessToken = randomBytes(24).toString('hex');

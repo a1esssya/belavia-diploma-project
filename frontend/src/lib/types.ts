@@ -74,6 +74,26 @@ export type OrderEvent = {
   createdAt: string;
 };
 
+export type BaggageLine = {
+  pieces: number;
+  weightKg: number;
+};
+
+export type BaggageSummary = {
+  cabin: BaggageLine;
+  checked: BaggageLine;
+  extraPurchased?: BaggageLine | null;
+};
+
+export type AncillaryType = 'SEAT' | 'MEAL' | 'EXTRA_BAGGAGE';
+
+export type AncillaryItem = {
+  id: string;
+  type: AncillaryType;
+  title: string;
+  description: string;
+};
+
 export type OrderDetail = {
   id: string;
   pnr: string;
@@ -95,6 +115,8 @@ export type OrderDetail = {
   currency: string;
   exchange: Eligibility;
   refund: Eligibility;
+  baggageSummary: BaggageSummary;
+  ancillaries: AncillaryItem[];
   documents: OrderDocument[];
   recentEvents: OrderEvent[];
 };

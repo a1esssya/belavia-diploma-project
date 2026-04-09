@@ -9,6 +9,6 @@ describe('format utilities', () => {
 
   it('returns a future departure label', () => {
     const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
-    expect(formatRelativeDeparture(tomorrow)).toContain('через');
+    expect(formatRelativeDeparture(tomorrow)).toContain('Через');
   });
 });

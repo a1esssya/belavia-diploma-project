@@ -7,6 +7,8 @@ async function createOrderSeed(userId, order) {
         where: { pnr: order.pnr },
         update: {
             ...order,
+            baggageSummary: order.baggageSummary,
+            ancillaries: order.ancillaries,
             documents: {
                 deleteMany: {},
                 create: order.documents.map((document) => ({
@@ -22,6 +24,8 @@ async function createOrderSeed(userId, order) {
         },
         create: {
             ...order,
+            baggageSummary: order.baggageSummary,
+            ancillaries: order.ancillaries,
             documents: {
                 create: order.documents.map((document) => ({
                     ...document,
@@ -80,6 +84,19 @@ async function main() {
             arrivalAt: new Date('2026-05-16T12:15:00Z'),
             status: client_1.OrderStatus.UPCOMING,
             totalAmount: '185.00',
+            baggageSummary: {
+                cabin: { pieces: 1, weightKg: 10 },
+                checked: { pieces: 1, weightKg: 23 },
+                extraPurchased: null,
+            },
+            ancillaries: [
+                {
+                    id: 'seat-flex-window',
+                    type: 'SEAT',
+                    title: 'Выбор места',
+                    description: 'Место 12A, у окна',
+                },
+            ],
             pssScenario: client_1.PssScenario.FLEXIBLE,
             documents: [
                 {
@@ -120,6 +137,19 @@ async function main() {
             arrivalAt: new Date('2026-06-03T13:20:00Z'),
             status: client_1.OrderStatus.UPCOMING,
             totalAmount: '240.00',
+            baggageSummary: {
+                cabin: { pieces: 1, weightKg: 10 },
+                checked: { pieces: 1, weightKg: 23 },
+                extraPurchased: null,
+            },
+            ancillaries: [
+                {
+                    id: 'meal-pay-special',
+                    type: 'MEAL',
+                    title: 'Дополнительное питание',
+                    description: 'Горячее питание на борту',
+                },
+            ],
             pssScenario: client_1.PssScenario.EXCHANGE_SURCHARGE,
             documents: [
                 {
@@ -160,6 +190,19 @@ async function main() {
             arrivalAt: new Date('2026-07-11T09:40:00Z'),
             status: client_1.OrderStatus.UPCOMING,
             totalAmount: '310.00',
+            baggageSummary: {
+                cabin: { pieces: 1, weightKg: 10 },
+                checked: { pieces: 1, weightKg: 23 },
+                extraPurchased: { pieces: 1, weightKg: 23 },
+            },
+            ancillaries: [
+                {
+                    id: 'bag-nref-extra',
+                    type: 'EXTRA_BAGGAGE',
+                    title: 'Дополнительный багаж',
+                    description: '1 место, 23 кг',
+                },
+            ],
             pssScenario: client_1.PssScenario.REFUND_BLOCKED,
             documents: [
                 {
@@ -194,6 +237,12 @@ async function main() {
             arrivalAt: new Date('2026-03-15T07:25:00Z'),
             status: client_1.OrderStatus.CANCELLED,
             totalAmount: '120.00',
+            baggageSummary: {
+                cabin: { pieces: 1, weightKg: 10 },
+                checked: { pieces: 0, weightKg: 0 },
+                extraPurchased: null,
+            },
+            ancillaries: [],
             pssScenario: client_1.PssScenario.CANCELLED_TRIP,
             documents: [
                 {
@@ -223,6 +272,12 @@ async function main() {
             arrivalAt: new Date('2026-08-22T01:10:00Z'),
             status: client_1.OrderStatus.UPCOMING,
             totalAmount: '420.00',
+            baggageSummary: {
+                cabin: { pieces: 1, weightKg: 10 },
+                checked: { pieces: 1, weightKg: 23 },
+                extraPurchased: null,
+            },
+            ancillaries: [],
             pssScenario: client_1.PssScenario.COMMIT_FAILURE,
             documents: [
                 {

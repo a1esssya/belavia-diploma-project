@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { OrderStatus } from '@prisma/client';
 
 import { PrismaService } from '../../common/prisma.service';
 import { HistoryService } from '../history/history.service';
@@ -33,6 +34,11 @@ export class DocumentsService {
 
   async resendForUserOrder(userId: string, orderId: string) {
     const order = await this.ordersService.assertOrderAccess(userId, orderId);
+
+    if (order.status === OrderStatus.CANCELLED) {
+      throw new BadRequestException('Для отменённого заказа повторная отправка документов недоступна');
+    }
+
     const now = new Date();
 
     await this.prisma.orderDocument.updateMany({
@@ -43,7 +49,7 @@ export class DocumentsService {
     await this.historyService.addEvent(
       order.id,
       'documents.resent',
-      'Документы повторно отправлены на email',
+      'Документы повторно отправлены на e-mail',
       { deliveryEmail: 'demo@belavia.by' },
     );
 
